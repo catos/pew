@@ -17,20 +17,24 @@ export default class Entity {
   type: string
   components: Component[]
 
-  hitbox?: HitboxComponent
-  graphics?: GraphicsComponent
-  movement?: MovementComponent
-  transform?: TransformComponent
-  jump?: JumpComponent
-  climb?: ClimbComponent
-  crouch?: CrouchComponent
-  dash?: DashComponent
+  // hitbox?: HitboxComponent
+  // graphics?: GraphicsComponent
+  // movement?: MovementComponent
+  // transform?: TransformComponent
+  // jump?: JumpComponent
+  // climb?: ClimbComponent
+  // crouch?: CrouchComponent
+  // dash?: DashComponent
 
   constructor({ id, name, type }: IEntitySpec) {
     this.id = id
     this.name = name
     this.type = type
     this.components = []
+  }
+
+  getComponent = <T extends Component>(name: string): T => {
+    return this.components.find(p => p.name === name) as T
   }
 
   addComponent = (component: Component) => {

@@ -1,4 +1,5 @@
 import System from './System.js'
+import MovementComponent from '../components/MovementComponent.js'
 
 export default class MovementSystem extends System {
 
@@ -25,6 +26,9 @@ export default class MovementSystem extends System {
     this.scene.layers[0].objects
       .filter(entity => entity.transform && entity.movement)
       .forEach(entity => {
+
+        const movement = entity.getComponent<MovementComponent>('movement')
+
         let {
           movement: { acceleration, deceleration, velocity, dragFactor, direction }
         } = entity
