@@ -5,12 +5,10 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf build",
-    "build": "yarn run clean && tsc",
-    "postbuild": "copyfiles -u 1 public/**/* build",
-    "build-dev": "yarn run clean && tsc -w",
-    "postbuild-dev": "copyfiles -u 1 public/**/* build",
-    "prestart": "yarn run build-dev",
-    "start": "browser-sync build -w"
+    "copy-files": "copyfiles -u 1 public/**/* build",
+    "prestart": "yarn clean && yarn copy-files",
+    "start": "tsc -w",
+    "build": "yarn clean && yarn copy-files && tsc"
   },
   "keywords": [],
   "author": "",
