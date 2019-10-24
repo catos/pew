@@ -1,5 +1,8 @@
 import System from './System.js'
 import Entity from '../entities/Entity.js'
+import HitboxComponent from '../components/HitboxComponent.js'
+import TransformComponent from '../components/TransformComponent.js'
+import MovementComponent from '../components/MovementComponent.js'
 
 export enum Sides {
   NONE = 0,
@@ -26,7 +29,7 @@ export default class CollisionSystem extends System {
     // TODO: optimize search
     this.candidates = this.scene.layers[0]
       .objects
-      .filter(entity => entity.hitbox)
+      .filter(entity => entity.hasComponents(['hitbox']))
   }
 
   input = () => {
@@ -41,20 +44,27 @@ export default class CollisionSystem extends System {
 
     const entities = this.scene.layers[0]
       .objects
-      .filter(entity => entity.hitbox && entity.movement)
-      .filter(entity => entity.movement.velocity.x !== 0 || entity.movement.velocity.y !== 0)
+      .filter(entity => entity.hasComponents(['hitbox', 'movement']))
+    // .filter(entity => entity.movement.velocity.x !== 0 || entity.movement.velocity.y !== 0)
+
 
     entities.forEach(entity => {
+      const movement = entity.getComponent<MovementComponent>('movement')
 
-      const { hitbox, transform, movement } = entity
-      hitbox.collision = Sides.NONE
+      // TODO: invert statement
+      if (movement.velocity.x !== 0 || movement.velocity.y !== 0) {
+        const hitbox = entity.getComponent<HitboxComponent>('hitbox')
+        const transform = entity.getComponent<TransformComponent>('transform')
 
-      // TODO: figure out how to move position updates to MovementSystem
-      transform.position.x += movement.velocity.x * dt
-      this.checkX(entity)
+        hitbox.collision = Sides.NONE
 
-      transform.position.y += movement.velocity.y * dt
-      this.checkY(entity)
+        // TODO: figure out how to move position updates to MovementSystem
+        transform.position.x += movement.velocity.x * dt
+        this.checkX(entity)
+
+        transform.position.y += movement.velocity.y * dt
+        this.checkY(entity)
+      }
     })
   }
 
@@ -66,14 +76,16 @@ export default class CollisionSystem extends System {
       this.context.fillStyle = '#0000bb66';
       this.scene.layers[0]
         .objects
-        .filter(entity => entity.hitbox)
+        .filter(entity => entity.hasComponents(['hitbox']))
         .forEach(entity => {
-          const { hitbox: { bounds } } = entity
+          const hitbox = entity.getComponent<HitboxComponent>('hitbox')
+          const cameraTransform = this.camera.getComponent<TransformComponent>('transform')
+
           this.context.fillRect(
-            bounds.left - this.camera.transform.position.x,
-            bounds.top - this.camera.transform.position.y,
-            bounds.size.x,
-            bounds.size.y
+            hitbox.bounds.left - cameraTransform.position.x,
+            hitbox.bounds.top - cameraTransform.position.y,
+            hitbox.bounds.size.x,
+            hitbox.bounds.size.y
           )
 
           // TODO: draw collisions....
@@ -87,8 +99,8 @@ export default class CollisionSystem extends System {
     this.candidates
       .filter(candidate => candidate !== entity) // Dont check collisions on yourself
       .forEach(candidate => {
-        const { hitbox: ehb } = entity
-        const { hitbox: chb } = candidate
+        const ehb = entity.getComponent<HitboxComponent>('hitbox')
+        const chb = candidate.getComponent<HitboxComponent>('hitbox')
 
         // Entity overlaps with others ?
         if (ehb.bounds.overlaps(chb.bounds)) {
@@ -101,8 +113,8 @@ export default class CollisionSystem extends System {
     this.candidates
       .filter(candidate => candidate !== entity) // Dont check collisions on yourself
       .forEach(candidate => {
-        const { hitbox: ehb } = entity
-        const { hitbox: chb } = candidate
+        const ehb = entity.getComponent<HitboxComponent>('hitbox')
+        const chb = candidate.getComponent<HitboxComponent>('hitbox')
 
         // Entity overlaps with others ?
         if (ehb.bounds.overlaps(chb.bounds)) {

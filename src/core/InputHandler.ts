@@ -1,5 +1,6 @@
 import Vector2 from "../lib/Vector2.js"
 import Game from "../Game.js"
+import TransformComponent from "../scene/components/TransformComponent.js"
 
 
 interface IMouseInput {
@@ -52,11 +53,12 @@ export default class InputHandler {
   }
 
   getEventPosition = (event: MouseEvent) => {
-    const { scene: { camera }, canvas: { canvasRect } } = this.game
+    const { canvas: { canvasRect } } = this.game
+    const cameraTransform = this.game.scene.camera.getComponent<TransformComponent>('transform')
 
     return new Vector2(
-      event.clientX - Math.floor(canvasRect.left) + camera.transform.position.x,
-      event.clientY - Math.floor(canvasRect.top) + window.scrollY + camera.transform.position.y
+      event.clientX - Math.floor(canvasRect.left) + cameraTransform.position.x,
+      event.clientY - Math.floor(canvasRect.top) + window.scrollY + cameraTransform.position.y
     )
   }
 

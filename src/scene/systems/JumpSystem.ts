@@ -1,11 +1,15 @@
 import System from './System.js'
 import { Sides } from './CollisionSystem.js'
+import ClimbComponent from '../components/ClimbComponent.js'
+import JumpComponent from '../components/JumpComponent.js'
+import HitboxComponent from '../components/HitboxComponent.js'
+import MovementComponent from '../components/MovementComponent.js'
 
 export default class JumpSystem extends System {
 
   input = () => {
     const { keysDown } = this.game.inputHandler
-    const { jump } = this.scene.player
+    const jump = this.player.getComponent<JumpComponent>('jump')
 
     // Jump
     if (keysDown.has('KeyW')) {
@@ -15,9 +19,12 @@ export default class JumpSystem extends System {
 
   update = (dt: number) => {
     this.scene.layers[0].objects
-      .filter(entity => entity.jump)
+      .filter(entity => entity.hasComponents(['jump']))
       .forEach(entity => {
-        const { climb, jump, hitbox, movement: { velocity } } = entity
+        const jump = entity.getComponent<JumpComponent>('jump')
+        const climb = entity.getComponent<ClimbComponent>('climb')
+        const hitbox = entity.getComponent<HitboxComponent>('hitbox')
+        const movement = entity.getComponent<MovementComponent>('movement')
 
         // Cancel jump if collision on top
         if (hitbox.collision === Sides.TOP) {
@@ -47,7 +54,7 @@ export default class JumpSystem extends System {
 
         // Add jump to velocity
         if (jump.engagedTime > 0) {
-          velocity.y = -(jump.velocity + Math.abs(velocity.x) * jump.speedBoost)
+          movement.velocity.y = -(jump.velocity + Math.abs(movement.velocity.x) * jump.speedBoost)
           jump.engagedTime -= dt
         }
 

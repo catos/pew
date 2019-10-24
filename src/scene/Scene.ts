@@ -7,8 +7,6 @@ import Tileset from "../core/Tileset.js"
 import Layer from "./Layer.js"
 
 import PlayerEntity from "./entities/PlayerEntity.js"
-import SkeletonEntity from "./entities/SkeletonEntity.js"
-import BlockEntity from "./entities/BlockEntity.js"
 import CameraEntity from "./entities/CameraEntity.js"
 
 import System from "./systems/System.js"
@@ -16,7 +14,7 @@ import MovementSystem from "./systems/MovementSystem.js"
 import RenderSystem from "./systems/RenderSystem.js"
 import CollisionSystem from "./systems/CollisionSystem.js"
 import JumpSystem from "./systems/JumpSystem.js"
-import EditorSystem from "./systems/Editor/EditorSystem.js"
+// import EditorSystem from "./systems/Editor/EditorSystem.js"
 import CameraSystem from "./systems/CameraSystem.js"
 import DebugSystem from "./systems/DebugSystem.js"
 import UISystem from "./systems/UISystem.js"
@@ -117,22 +115,22 @@ export default class Scene {
       .find(p => p instanceof CameraEntity)
 
     // Register systems
-    // this.systems = [
-    //   new CameraSystem(this.player, this),
-    //   new RenderSystem(this),
-    //   new UISystem(this),
-    //   new MovementSystem(this),
-    //   new CollisionSystem(this),
-    //   new ClimbSystem(this),
-    //   new JumpSystem(this),
-    //   new DashSystem(this),
-    //   new CrouchSystem(this),
-    //   new ClockSystem(this),
-    //   new EditorSystem(this),
-    //   new ShaderSystem(this),
-    //   new DebugSystem(this),
-    // ]
-    // this.systems.forEach(system => system.init())
+    this.systems = [
+      new CameraSystem(this.player, this),
+      new RenderSystem(this),
+      new UISystem(this),
+      new MovementSystem(this),
+      new CollisionSystem(this),
+      new ClimbSystem(this),
+      new JumpSystem(this),
+      new DashSystem(this),
+      new CrouchSystem(this),
+      new ClockSystem(this),
+      // new EditorSystem(this),
+      new ShaderSystem(this),
+      new DebugSystem(this),
+    ]
+    this.systems.forEach(system => system.init())
 
     console.log('Scene.init', this);
   }

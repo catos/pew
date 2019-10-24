@@ -1,5 +1,6 @@
 import Vector2 from "../lib/Vector2";
 import CameraEntity from "../scene/entities/CameraEntity";
+import TransformComponent from "../scene/components/TransformComponent";
 
 function distance(ox: number, oy: number, nx: number, ny: number) {
   let dx = Math.abs(nx - ox);
@@ -44,8 +45,9 @@ const kimShader = (
     }
   }
 
+  const cameraTransform = camera.getComponent<TransformComponent>('transform')
   const rect = {
-    globalX: position.x - 16 * 4 - camera.transform.position.x,
+    globalX: position.x - 16 * 4 - cameraTransform.position.x,
     globalY: position.y - 16 * 4,
     width: 16 * 9,
     height: 16 * 9

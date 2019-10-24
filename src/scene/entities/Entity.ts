@@ -18,28 +18,17 @@ export default class Entity {
   }
 
   hasComponents = (names: string[]): boolean => {
-    const components = names.map(name => this.components[name])
-    console.log(components)
-    return !components.some(p => p === undefined)
-    // return names
-    //   .map(name => this.components[name])
-    //   .some(p => p === undefined)
+    return !names
+      .map(name => this.components[name])
+      .some(p => p === undefined)
   }
 
   getComponent = <T extends Component>(name: string): T => {
     return this.components[name] as T
   }
 
-  // getComponent = <T extends Component>(name: string): T => {
-  //   return this.components[name] as T
-  // }
-
   addComponent = (component: Component) => {
-    // this.components.push(component)
-
-    // TODO: switch ?
     this.components[component.name] = component
-
     return this
   }
 
@@ -58,8 +47,6 @@ export default class Entity {
    *
    */
   onCollide(entity: Entity, direction: Direction) {
-    // console.log(`${this.name}.onCollide(${entity.name})`, entity)
-
     const hitbox = this.getComponent<HitboxComponent>('hitbox')
     const { velocity } = this.getComponent<MovementComponent>('movement')
     const entityHitbox = entity.getComponent<HitboxComponent>('hitbox')

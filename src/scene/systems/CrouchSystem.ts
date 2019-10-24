@@ -1,9 +1,13 @@
 import System from './System.js'
+import HitboxComponent from '../components/HitboxComponent.js'
+import CrouchComponent from '../components/CrouchComponent.js'
 
 export default class CrouchSystem extends System {
 
   input = () => {
-    const { crouch, hitbox } = this.player
+    const hitbox = this.player.getComponent<HitboxComponent>('hitbox')
+    const crouch = this.player.getComponent<CrouchComponent>('crouch')
+
     const { keysDown } = this.game.inputHandler
 
     if (keysDown.has('KeyS')) {

@@ -2,6 +2,8 @@ import Scene from '../Scene.js'
 import System from './System.js'
 import Vector2 from '../../lib/Vector2.js'
 import Tileset from '../../core/Tileset.js'
+import DashComponent from '../components/DashComponent.js'
+import TransformComponent from '../components/TransformComponent.js'
 
 export default class UISystem extends System {
   score: number
@@ -13,7 +15,7 @@ export default class UISystem extends System {
   }
 
   update = (dt: number) => {
-    const { player: { transform: { position } } } = this.scene
+    const { position } = this.player.getComponent<TransformComponent>('transform')
     this.score = position.x > this.score
       ? position.x
       : this.score
@@ -22,7 +24,7 @@ export default class UISystem extends System {
   render = (dt: number) => {
     const { font } = this.game
     const { tileset } = this.scene
-    const { dash } = this.player
+    const dash = this.player.getComponent<DashComponent>('dash')
 
     // "Score"
     const text = `Score:${Math.floor(this.score)}`
