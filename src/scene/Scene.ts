@@ -14,7 +14,7 @@ import MovementSystem from "./systems/MovementSystem.js"
 import RenderSystem from "./systems/RenderSystem.js"
 import CollisionSystem from "./systems/CollisionSystem.js"
 import JumpSystem from "./systems/JumpSystem.js"
-// import EditorSystem from "./systems/Editor/EditorSystem.js"
+import EditorSystem from "./systems/Editor/EditorSystem.js"
 import CameraSystem from "./systems/CameraSystem.js"
 import DebugSystem from "./systems/DebugSystem.js"
 import UISystem from "./systems/UISystem.js"
@@ -104,14 +104,14 @@ export default class Scene {
     })
 
     this.player = this.layers
-      .find(p => p.index === 1).objects
+      .find(p => p.index === 1).entities
       .find(p => p instanceof PlayerEntity)
 
     const itHas = this.player.hasComponents(['asdf'])
     console.log('itHas: ', itHas)
 
     this.camera = this.layers
-      .find(p => p.index === 1).objects
+      .find(p => p.index === 1).entities
       .find(p => p instanceof CameraEntity)
 
     // Register systems
@@ -126,7 +126,7 @@ export default class Scene {
       new DashSystem(this),
       new CrouchSystem(this),
       new ClockSystem(this),
-      // new EditorSystem(this),
+      new EditorSystem(this),
       new ShaderSystem(this),
       new DebugSystem(this),
     ]

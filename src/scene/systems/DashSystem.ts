@@ -17,7 +17,7 @@ export default class DashSystem extends System {
   }
 
   update = (dt: number) => {
-    this.scene.layers[0].objects
+    this.scene.layers[0].entities
       .filter(entity => entity.hasComponents(['dash']))
       .forEach(entity => {
         const dash = entity.getComponent<DashComponent>('dash')

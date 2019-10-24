@@ -65,7 +65,7 @@ export default class DebugSystem extends System {
       x += 8 * 9
     })
 
-    const objects = layers[0].objects
+    const objects = layers[0].entities
     font.print(
       `E:${objects.length} C:${objects.filter(p => p.hasComponents(['hitbox'])).length} FPS:${timer.fps}`,
       context,

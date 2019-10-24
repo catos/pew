@@ -28,7 +28,7 @@ export default class CollisionSystem extends System {
     // TODO: fix layers[0] (DO A SEARCH)
     // TODO: optimize search
     this.candidates = this.scene.layers[0]
-      .objects
+      .entities
       .filter(entity => entity.hasComponents(['hitbox']))
   }
 
@@ -43,7 +43,7 @@ export default class CollisionSystem extends System {
   update = (dt: number) => {
 
     const entities = this.scene.layers[0]
-      .objects
+      .entities
       .filter(entity => entity.hasComponents(['hitbox', 'movement']))
     // .filter(entity => entity.movement.velocity.x !== 0 || entity.movement.velocity.y !== 0)
 
@@ -75,7 +75,7 @@ export default class CollisionSystem extends System {
       // Render hitbox
       this.context.fillStyle = '#0000bb66';
       this.scene.layers[0]
-        .objects
+        .entities
         .filter(entity => entity.hasComponents(['hitbox']))
         .forEach(entity => {
           const hitbox = entity.getComponent<HitboxComponent>('hitbox')

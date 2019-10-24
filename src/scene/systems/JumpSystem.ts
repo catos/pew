@@ -18,7 +18,7 @@ export default class JumpSystem extends System {
   }
 
   update = (dt: number) => {
-    this.scene.layers[0].objects
+    this.scene.layers[0].entities
       .filter(entity => entity.hasComponents(['jump']))
       .forEach(entity => {
         const jump = entity.getComponent<JumpComponent>('jump')

@@ -14,7 +14,7 @@ export default class RenderSystem extends System {
 
   renderLayer = (layer: Layer) => {
     layer
-      .objects
+      .entities
       .filter(entity => entity.hasComponents(['graphics']))
       .forEach(entity => {
         this.drawTile(entity)
