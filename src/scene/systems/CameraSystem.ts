@@ -31,5 +31,12 @@ export default class CameraSystem extends System {
 
     // this.context.fillStyle = '#00ff0011';
     // this.context.fillRect(0, 0, size.x, size.y);
+    context.fillRect(
+      0 - this.camera.transform.position.x,
+      0 - this.camera.transform.position.y,
+      128 * 16,
+      16 * 16)
+
+
   }
 }

@@ -4,52 +4,50 @@ import { IEntitySpec } from "../Scene.js"
 import Component from "../components/Component.js"
 import HitboxComponent from "../components/HitboxComponent.js"
 import MovementComponent from "../components/MovementComponent.js"
-import TransformComponent from "../components/TransformComponent.js"
-import JumpComponent from "../components/JumpComponent.js"
-import ClimbComponent from "../components/ClimbComponent.js"
-import CrouchComponent from "../components/CrouchComponent.js"
-import DashComponent from "../components/DashComponent.js"
-import GraphicsComponent from "../components/GraphicsComponent.js"
 
 export default class Entity {
   id: number
   name: string
   type: string
-  components: Component[]
-
-  // hitbox?: HitboxComponent
-  // graphics?: GraphicsComponent
-  // movement?: MovementComponent
-  // transform?: TransformComponent
-  // jump?: JumpComponent
-  // climb?: ClimbComponent
-  // crouch?: CrouchComponent
-  // dash?: DashComponent
+  components: { [name: string]: Component } = {}
 
   constructor({ id, name, type }: IEntitySpec) {
     this.id = id
     this.name = name
     this.type = type
-    this.components = []
+  }
+
+  hasComponents = (names: string[]): boolean => {
+    const components = names.map(name => this.components[name])
+    console.log(components)
+    return !components.some(p => p === undefined)
+    // return names
+    //   .map(name => this.components[name])
+    //   .some(p => p === undefined)
   }
 
   getComponent = <T extends Component>(name: string): T => {
-    return this.components.find(p => p.name === name) as T
+    return this.components[name] as T
   }
+
+  // getComponent = <T extends Component>(name: string): T => {
+  //   return this.components[name] as T
+  // }
 
   addComponent = (component: Component) => {
-    this.components.push(component)
+    // this.components.push(component)
 
     // TODO: switch ?
-    this[component.name] = component
+    this.components[component.name] = component
 
     return this
   }
 
-  removeComponent = (component: Component) => {
-    this.components = this.components.filter(p => p.name !== component.name)
-    return this
-  }
+  // TODO: implement and use ?
+  // removeComponent = (component: Component) => {
+  //   this.components = this.components.filter(p => p.name !== component.name)
+  //   return this
+  // }
 
   /**
    * What happens on collide ? 
@@ -62,9 +60,9 @@ export default class Entity {
   onCollide(entity: Entity, direction: Direction) {
     // console.log(`${this.name}.onCollide(${entity.name})`, entity)
 
-    // const hitbox = this.components.find(p => p instanceOf HitboxComponent)
-    const { hitbox, movement: { velocity } } = this
-    const { hitbox: entityHitbox } = entity
+    const hitbox = this.getComponent<HitboxComponent>('hitbox')
+    const { velocity } = this.getComponent<MovementComponent>('movement')
+    const entityHitbox = entity.getComponent<HitboxComponent>('hitbox')
 
     if (direction === Direction.Horizontal) {
       // RIGHT

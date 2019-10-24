@@ -24,10 +24,8 @@ export default class MovementSystem extends System {
   update = (dt: number) => {
     // TODO: iterate all layers
     this.scene.layers[0].objects
-      .filter(entity => entity.transform && entity.movement)
+      .filter(entity => entity.hasComponents(['transform', 'movement']))
       .forEach(entity => {
-
-        const movement = entity.getComponent<MovementComponent>('movement')
 
         let {
           movement: { acceleration, deceleration, velocity, dragFactor, direction }

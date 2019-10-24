@@ -83,7 +83,7 @@ export default class Scene {
   layers: Layer[]
   player: PlayerEntity
   camera: CameraEntity
-  systems: System[]
+  systems: System[] = []
 
   constructor(game: Game, url: string) {
     this.game = game
@@ -109,27 +109,30 @@ export default class Scene {
       .find(p => p.index === 1).objects
       .find(p => p instanceof PlayerEntity)
 
+    const itHas = this.player.hasComponents(['asdf'])
+    console.log('itHas: ', itHas)
+
     this.camera = this.layers
       .find(p => p.index === 1).objects
       .find(p => p instanceof CameraEntity)
 
     // Register systems
-    this.systems = [
-      new CameraSystem(this.player, this),
-      new RenderSystem(this),
-      new UISystem(this),
-      new MovementSystem(this),
-      new CollisionSystem(this),
-      new ClimbSystem(this),
-      new JumpSystem(this),
-      new DashSystem(this),
-      new CrouchSystem(this),
-      new ClockSystem(this),
-      new EditorSystem(this),
-      new ShaderSystem(this),
-      new DebugSystem(this),
-    ]
-    this.systems.forEach(system => system.init())
+    // this.systems = [
+    //   new CameraSystem(this.player, this),
+    //   new RenderSystem(this),
+    //   new UISystem(this),
+    //   new MovementSystem(this),
+    //   new CollisionSystem(this),
+    //   new ClimbSystem(this),
+    //   new JumpSystem(this),
+    //   new DashSystem(this),
+    //   new CrouchSystem(this),
+    //   new ClockSystem(this),
+    //   new EditorSystem(this),
+    //   new ShaderSystem(this),
+    //   new DebugSystem(this),
+    // ]
+    // this.systems.forEach(system => system.init())
 
     console.log('Scene.init', this);
   }
@@ -151,12 +154,6 @@ export default class Scene {
     gradient.addColorStop(.75, 'black');
     context.fillStyle = gradient
     // context.fillStyle = '#cbdbfc'
-
-    context.fillRect(
-      0 - this.camera.transform.position.x,
-      0 - this.camera.transform.position.y,
-      128 * 16,
-      16 * 16)
 
     this.systems.forEach(system => system.render(dt))
   }
