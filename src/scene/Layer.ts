@@ -6,6 +6,7 @@ import PlayerEntity from "./entities/PlayerEntity.js"
 import SkeletonEntity from "./entities/SkeletonEntity.js"
 import BlockEntity from "./entities/BlockEntity.js"
 import CameraEntity from "./entities/CameraEntity.js"
+import DecorationEntity from "./entities/DecorationEntity.js"
 
 export default class Layer {
   index: number
@@ -23,6 +24,7 @@ export default class Layer {
     })
   }
 
+  // pffff
   createEntity = (spec: IEntitySpec) => {
     switch (spec.type) {
       case 'player':
@@ -36,6 +38,9 @@ export default class Layer {
 
       case 'camera':
         return new CameraEntity(spec)
+
+      case 'decoration':
+        return new DecorationEntity(spec)
 
       default:
         throw new Error(`Unknown object type '${spec.type}`)

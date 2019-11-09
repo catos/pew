@@ -107,9 +107,6 @@ export default class Scene {
       .find(p => p.index === 1).entities
       .find(p => p instanceof PlayerEntity)
 
-    const itHas = this.player.hasComponents(['asdf'])
-    console.log('itHas: ', itHas)
-
     this.camera = this.layers
       .find(p => p.index === 1).entities
       .find(p => p instanceof CameraEntity)
