@@ -7,11 +7,16 @@ import Vector2 from "../../../lib/Vector2.js";
 import Layer from "../../Layer.js";
 import TransformComponent from "../../components/TransformComponent.js";
 
+interface IBrush {
+  id: number
+  current: boolean
+  spec: IEntitySpec
+}
+
 export default class EditorSystem extends System {
   editorModeEnabled: boolean
   showEntities: boolean
-  entitySpecs: IEntitySpec[]
-  currentEntity: IEntitySpec
+  brushes: IBrush[]
   currentLayer: Layer
 
   init = () => {
@@ -19,9 +24,10 @@ export default class EditorSystem extends System {
 
     this.editorModeEnabled = false
     this.showEntities = false
-    this.entitySpecs = spec.entities.filter(p => p.animations)
-
-    this.currentEntity = this.entitySpecs.find(p => p.name === 'grass')
+    this.brushes = spec.entities.filter(p => p.animations).map((spec, id) => {
+      return { id, current: spec.name === 'grass' ? true : false, spec: spec }
+    })
+    console.log(this.brushes)
     // TODO: replace all layers[0]
     this.currentLayer = this.scene.layers[0]
   }
@@ -47,11 +53,14 @@ export default class EditorSystem extends System {
 
     // Change brush
     if (keysDown.has('ShiftLeft') && keysDown.has('KeyX')) {
-      let nextId = this.currentEntity.id + 1
-      if (nextId > this.entitySpecs.length) {
-        nextId = 1
-      }
-      this.currentEntity = this.entitySpecs.find(p => p.id === nextId)
+      const current = this.brushes.find(p => p.current).id
+      const next = current + 1 >= this.brushes.length ? 0 : current + 1
+      this.brushes = this.brushes.map(brush => {
+        return {
+          ...brush,
+          current: brush.id === next ? true : false
+        }
+      })
     }
 
     // Toggle show entities
@@ -65,11 +74,11 @@ export default class EditorSystem extends System {
         roundToNearest(16, mouse.position.x - 8),
         roundToNearest(16, mouse.position.y - 8)
       )
-      // console.log(`mouseevent @${mousePosition.x}, ${mousePosition.y}, position: ${position.x}, ${position.y}`)
-      this.addEntity(
-        this.currentEntity,
-        this.currentLayer,
-        position)
+      console.log(`mouseevent @${mouse.position.x}, ${mouse.position.y}, position: ${position.x}, ${position.y}`)
+      // this.addEntity(
+      //   this.currentEntity,
+      //   this.currentLayer,
+      //   position)
     }
   }
 
@@ -85,7 +94,8 @@ export default class EditorSystem extends System {
     this.context.fillRect(16 * 16 - 4, 16 * 14 - 4, 5 * 6 + 8, 29)
     font.print(`BRUSH`, this.context, 16 * 16, 16 * 14)
 
-    const tileId = this.currentEntity.animations[0].frames[0]
+    const currentBrush = this.brushes.find(p => p.current).spec
+    const tileId = currentBrush.animations[0].frames[0]
     tileset.drawTile(tileId.toString(), this.context, 16 * 16 + 6, 16 * 14 + 6)
 
     // Show entities

@@ -8,7 +8,6 @@ export default class DecorationEntity extends Entity {
   constructor(spec: IEntitySpec) {
     const { position, animations, size } = spec
     super(spec)
-    console.log('deco', spec)
 
     this.addComponent(new TransformComponent(position, size))
       .addComponent(new GraphicsComponent(animations))
