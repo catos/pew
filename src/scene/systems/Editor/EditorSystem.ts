@@ -6,6 +6,7 @@ import Scene, { ILevelSpec, IEntitySpec, ILayerSpec } from "../../Scene.js";
 import Vector2 from "../../../lib/Vector2.js";
 import Layer from "../../Layer.js";
 import TransformComponent from "../../components/TransformComponent.js";
+import CameraEntity from "../../entities/CameraEntity.js";
 
 interface IBrush {
   id: number
@@ -74,11 +75,11 @@ export default class EditorSystem extends System {
         roundToNearest(16, mouse.position.x - 8),
         roundToNearest(16, mouse.position.y - 8)
       )
-      console.log(`mouseevent @${mouse.position.x}, ${mouse.position.y}, position: ${position.x}, ${position.y}`)
-      // this.addEntity(
-      //   this.currentEntity,
-      //   this.currentLayer,
-      //   position)
+      // console.log(`mouseevent @${mouse.position.x}, ${mouse.position.y}, position: ${position.x}, ${position.y}`)
+      this.addEntity(
+        this.brushes.find(p => p.current === true).spec,
+        this.currentLayer,
+        position)
     }
   }
 
@@ -141,10 +142,9 @@ export default class EditorSystem extends System {
   }
 
   addEntity = (spec: IEntitySpec, layer: Layer, position: Vector2) => {
-    // TODO: fix objectAt
-    // if (this.objectAt(layer, position, spec.size)) {
-    //   return
-    // }
+    if (this.objectAt(layer, position, spec.size)) {
+      return
+    }
 
     const specCopy = JSON.parse(JSON.stringify(spec))
     specCopy.position = position
@@ -156,12 +156,24 @@ export default class EditorSystem extends System {
     collisionSystem.init()
   }
 
-  // objectAt = (layer: Layer, position: Vector2, size: Vector2) => {
-  //   const bb = new BoundingBox(position, size)
-  //   const collision = layer.entities
-  //     .filter(entity => entity.hitbox)
-  //     .find(entity => bb.overlaps(entity.hitbox.bounds))
-  //   return collision !== undefined
-  // }
+  objectAt = (layer: Layer, position: Vector2, size: Vector2) => {
+    const bb = new BoundingBox(position, size)
+
+    const candidates = layer.entities
+      .filter(entity => entity.hasComponents(['transform']))
+
+    const collides = candidates.some(candidate => {
+      if (candidate instanceof CameraEntity) {
+        return false
+      }
+
+      const transform = candidate.getComponent<TransformComponent>('transform')
+      const candidateBb = new BoundingBox(transform.position, transform.size)
+
+      return bb.overlaps(candidateBb)
+    })
+
+    return collides
+  }
 
 }
