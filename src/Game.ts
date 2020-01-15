@@ -35,7 +35,7 @@ export default class Game {
     await this.font.init()
 
     // Scene
-    this.scene = new Scene(this, '/build/assets/levels/level-0.json')
+    this.scene = new Scene(this, '/build/assets/levels/level-1.json')
     // this.scene = new Scene(this, '/s/pew/assets/levels/level-editor-1.json')
     await this.scene.init()
 

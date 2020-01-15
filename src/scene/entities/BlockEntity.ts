@@ -1,13 +1,14 @@
 import Entity from './Entity.js'
 import { IEntitySpec } from '../Scene.js';
+import Vector2 from '../../lib/Vector2.js';
 
 import TransformComponent from '../components/TransformComponent.js';
 import GraphicsComponent from '../components/GraphicsComponent.js';
 import HitboxComponent from '../components/HitboxComponent.js';
 
 export default class BlockEntity extends Entity {
-  constructor(spec: IEntitySpec) {
-    const { hitbox, position, animations, size } = spec
+  constructor(spec: IEntitySpec, position: Vector2) {
+    const { hitbox, animations, size } = spec
     super(spec)
 
     this.addComponent(new TransformComponent(position, size))

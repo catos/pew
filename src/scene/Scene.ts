@@ -51,7 +51,6 @@ export interface IEntitySpec {
   name: string
   type: string
   size: Vector2
-  position: Vector2
   hitbox: IEntitySpecHitbox
   animations: IEntitySpecAnimation[]
 }

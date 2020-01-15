@@ -147,8 +147,7 @@ export default class EditorSystem extends System {
     }
 
     const specCopy = JSON.parse(JSON.stringify(spec))
-    specCopy.position = position
-    const entity = layer.createEntity(specCopy)
+    const entity = layer.createEntity(specCopy, position)
     layer.entities.push(entity)
 
     // Update candiates for collision

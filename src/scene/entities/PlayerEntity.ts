@@ -15,8 +15,8 @@ import HealthComponent from '../components/HealthComponent.js';
 import ClimbComponent from '../components/ClimbComponent.js';
 
 export default class PlayerEntity extends Entity {
-  constructor(spec: IEntitySpec) {
-    const { hitbox, position, animations, size } = spec
+  constructor(spec: IEntitySpec, position: Vector2) {
+    const { hitbox, animations, size } = spec
     super(spec)
 
     this.addComponent(new TransformComponent(position, size))

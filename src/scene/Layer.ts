@@ -19,28 +19,28 @@ export default class Layer {
     this.name = layerSpec.name
     this.entities = layerSpec.objects.map(({ entityId, x, y }) => {
       const spec = entitySpecs.find(p => p.id === entityId)
-      spec.position = new Vector2(x, y)
-      return this.createEntity(spec)
+      const position = new Vector2(x, y)
+      return this.createEntity(spec, position)
     })
   }
 
   // pffff
-  createEntity = (spec: IEntitySpec) => {
+  createEntity = (spec: IEntitySpec, position: Vector2) => {
     switch (spec.type) {
       case 'player':
-        return new PlayerEntity(spec)
+        return new PlayerEntity(spec, position)
 
       case 'skeleton':
-        return new SkeletonEntity(spec)
+        return new SkeletonEntity(spec, position)
 
       case 'block':
-        return new BlockEntity(spec)
+        return new BlockEntity(spec, position)
 
       case 'camera':
-        return new CameraEntity(spec)
+        return new CameraEntity(spec, position)
 
       case 'decoration':
-        return new DecorationEntity(spec)
+        return new DecorationEntity(spec, position)
 
       default:
         throw new Error(`Unknown object type '${spec.type}`)

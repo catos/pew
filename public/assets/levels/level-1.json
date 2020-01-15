@@ -1,72 +1,190 @@
 {
   "name": "level-1",
-  "settings": {
-    "gravity": "1500"
-  },
+  "gravity": 1500,
   "layers": [
     {
       "index": 1,
-      "name": "main",
+      "name": "layer-2",
       "objects": [
         {
           "entityId": 1,
-          "x": 32,
-          "y": 144
+          "x": 0,
+          "y": 0
         },
         {
           "entityId": 2,
-          "x": 160,
-          "y": 32
-        },
-        {
-          "entityId": 3,
-          "x": 16,
-          "y": 192
-        },
-        {
-          "entityId": 3,
           "x": 32,
-          "y": 192
+          "y": 160
         },
         {
-          "entityId": 3,
+          "entityId": 4,
+          "x": 0,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 16,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 32,
+          "y": 176
+        },
+        {
+          "entityId": 4,
           "x": 48,
-          "y": 192
+          "y": 176
         },
         {
-          "entityId": 3,
+          "entityId": 4,
+          "x": 64,
+          "y": 176
+        },
+        {
+          "entityId": 5,
+          "x": 64,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 80,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 96,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 112,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 128,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 144,
+          "y": 176
+        },
+        {
+          "entityId": 4,
           "x": 160,
           "y": 176
         },
         {
-          "entityId": 3,
+          "entityId": 4,
           "x": 176,
           "y": 176
         },
         {
-          "entityId": 3,
+          "entityId": 4,
           "x": 192,
           "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 208,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 224,
+          "y": 176
+        },
+        {
+          "entityId": 4,
+          "x": 224,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 240,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 256,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 272,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 288,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 304,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 320,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 336,
+          "y": 160
+        },
+        {
+          "entityId": 4,
+          "x": 256,
+          "y": 80
+        },
+        {
+          "entityId": 4,
+          "x": 272,
+          "y": 80
+        },
+        {
+          "entityId": 4,
+          "x": 240,
+          "y": 80
         }
       ]
     },
     {
       "index": 2,
-      "name": "test",
+      "name": "layer-3",
       "objects": []
     }
   ],
   "entities": [
     {
       "id": 1,
+      "name": "camera1",
+      "type": "camera",
+      "size": {
+        "x": 256,
+        "y": 224
+      }
+    },
+    {
+      "id": 2,
       "name": "Mr Pew",
       "type": "player",
+      "size": {
+        "x": 16,
+        "y": 16
+      },
       "hitbox": {
-        "x": 8,
-        "y": 12,
+        "size": {
+          "x": 8,
+          "y": 6
+        },
         "offset": {
           "x": 4,
-          "y": 4
+          "y": 10
         }
       },
       "animations": [
@@ -94,12 +212,18 @@
       ]
     },
     {
-      "id": 2,
+      "id": 3,
       "name": "Skelly",
       "type": "skeleton",
+      "size": {
+        "x": 16,
+        "y": 16
+      },
       "hitbox": {
-        "x": 8,
-        "y": 12,
+        "size": {
+          "x": 8,
+          "y": 12
+        },
         "offset": {
           "x": 4,
           "y": 4
@@ -109,24 +233,30 @@
         {
           "name": "idle",
           "frames": [
-            17
+            33
           ]
         },
         {
           "name": "walk",
           "frames": [
-            17
+            33
           ]
         }
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "name": "grass",
       "type": "block",
-      "hitbox": {
+      "size": {
         "x": 16,
-        "y": 16,
+        "y": 16
+      },
+      "hitbox": {
+        "size": {
+          "x": 16,
+          "y": 16
+        },
         "offset": {
           "x": 0,
           "y": 0
@@ -136,7 +266,24 @@
         {
           "name": "idle",
           "frames": [
-            35
+            51
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "small_stone",
+      "type": "decoration",
+      "size": {
+        "x": 16,
+        "y": 16
+      },
+      "animations": [
+        {
+          "name": "idle",
+          "frames": [
+            97
           ]
         }
       ]

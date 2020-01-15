@@ -8,8 +8,8 @@ import GraphicsComponent from '../components/GraphicsComponent.js';
 import HitboxComponent from '../components/HitboxComponent.js';
 
 export default class SkeletonEntity extends Entity {
-  constructor(spec: IEntitySpec) {
-    const { hitbox, position, animations, size } = spec
+  constructor(spec: IEntitySpec, position: Vector2) {
+    const { hitbox, animations, size } = spec
     super(spec)
 
     this.addComponent(new TransformComponent(position, size))
