@@ -28,7 +28,6 @@ export default class EditorSystem extends System {
     this.brushes = spec.entities.filter(p => p.animations).map((spec, id) => {
       return { id, current: spec.name === 'grass' ? true : false, spec: spec }
     })
-    console.log(this.brushes)
     // TODO: replace all layers[0]
     this.currentLayer = this.scene.layers[0]
   }
@@ -117,7 +116,7 @@ export default class EditorSystem extends System {
       const objects = layer.entities.map(entity => {
         const transform = entity.getComponent<TransformComponent>('transform')
         return {
-          entityId: entity.id,
+          entityId: entity.entityId,
           x: Math.round(transform.position.x),
           y: transform.position.y
         }

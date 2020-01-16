@@ -23,6 +23,7 @@ import ClockSystem from "./systems/ClockSystem.js"
 import DashSystem from "./systems/DashSystem.js"
 import ShaderSystem from "./systems/ShaderSystem.js"
 import ClimbSystem from "./systems/ClimbSystem.js"
+import BreakableSystem from "./systems/BreakableSystem.js"
 
 export interface ILayerObjectSpec {
   entityId: number
@@ -50,6 +51,8 @@ export interface IEntitySpec {
   id: number
   name: string
   type: string
+  // TODO: breakable: boolean
+  hitpoints?: number
   size: Vector2
   hitbox: IEntitySpecHitbox
   animations: IEntitySpecAnimation[]
@@ -122,6 +125,7 @@ export default class Scene {
       new DashSystem(this),
       new CrouchSystem(this),
       new ClockSystem(this),
+      new BreakableSystem(this),
       new EditorSystem(this),
       new ShaderSystem(this),
       new DebugSystem(this),

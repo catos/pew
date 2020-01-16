@@ -5,6 +5,8 @@ import MovementComponent from '../components/MovementComponent.js'
 import TransformComponent from '../components/TransformComponent.js'
 import CrouchComponent from '../components/CrouchComponent.js'
 import GraphicsComponent from '../components/GraphicsComponent.js'
+import HitpointsComponent from '../components/HitpointsComponent.js'
+import HitboxComponent from '../components/HitboxComponent.js'
 
 export default class RenderSystem extends System {
 

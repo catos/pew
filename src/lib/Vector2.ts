@@ -36,4 +36,8 @@ export default class Vector2 {
   equalTo(b: Vector2) {
     return this.x === b.x && this.y === b.y
   }
+
+  distance = (b: Vector2) => {
+    return Math.hypot(b.x - this.x, b.y - this.y)
+  }
 }

@@ -248,6 +248,7 @@
       "id": 4,
       "name": "grass",
       "type": "block",
+      "hitpoints": 10,
       "size": {
         "x": 16,
         "y": 16

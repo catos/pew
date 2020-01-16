@@ -1,3 +1,4 @@
+import { uuidv4 } from "../../lib/utils.js"
 import { Sides, Direction } from "../systems/CollisionSystem.js"
 import { IEntitySpec } from "../Scene.js"
 
@@ -6,13 +7,15 @@ import HitboxComponent from "../components/HitboxComponent.js"
 import MovementComponent from "../components/MovementComponent.js"
 
 export default class Entity {
-  id: number
+  guid: string
+  entityId: number
   name: string
   type: string
   components: { [name: string]: Component } = {}
 
   constructor({ id, name, type }: IEntitySpec) {
-    this.id = id
+    this.guid = uuidv4()
+    this.entityId = id
     this.name = name
     this.type = type
   }

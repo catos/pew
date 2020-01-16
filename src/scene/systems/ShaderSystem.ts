@@ -5,7 +5,7 @@ export default class ShaderSystem extends System {
   showShaders: boolean
 
   init = () => {
-    this.showShaders = false
+    this.showShaders = true
   }
 
   input = () => {

@@ -7,6 +7,7 @@ import SkeletonEntity from "./entities/SkeletonEntity.js"
 import BlockEntity from "./entities/BlockEntity.js"
 import CameraEntity from "./entities/CameraEntity.js"
 import DecorationEntity from "./entities/DecorationEntity.js"
+import HitboxComponent from "./components/HitboxComponent.js"
 
 export default class Layer {
   index: number
@@ -23,6 +24,22 @@ export default class Layer {
       return this.createEntity(spec, position)
     })
   }
+
+  getEntity = (position: Vector2): Entity | null => {
+    let result: Entity | null = null
+    const candidates = this.entities
+      .filter(entity => entity.hasComponents(['hitbox']))
+
+    candidates.forEach(entity => {
+      const { bounds } = entity.getComponent<HitboxComponent>('hitbox')
+      if (bounds.contains(position)) {
+        result = entity
+      }
+    })
+
+    return result
+  }
+
 
   // pffff
   createEntity = (spec: IEntitySpec, position: Vector2) => {
@@ -46,6 +63,14 @@ export default class Layer {
         throw new Error(`Unknown object type '${spec.type}`)
     }
 
+  }
+
+  deleteEntity = (guid: string) => {
+    this.entities = this.entities.filter(p => p.guid !== guid)
+
+    // TODO: Update candiates for collision
+    // const collisionSystem = this.scene.systems.find(p => p instanceof CollisionSystem)
+    // collisionSystem.init()
   }
 
 }

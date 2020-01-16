@@ -12,7 +12,7 @@ export default class JumpSystem extends System {
     const jump = this.player.getComponent<JumpComponent>('jump')
 
     // Jump
-    if (keysDown.has('KeyW')) {
+    if (keysDown.has('Space')) {
       jump.jumpPressedTimer = 0.05
     }
   }

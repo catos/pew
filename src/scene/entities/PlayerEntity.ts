@@ -11,7 +11,7 @@ import HitboxComponent from '../components/HitboxComponent.js';
 import CrouchComponent from '../components/CrouchComponent.js';
 import JumpComponent from '../components/JumpComponent.js';
 import DashComponent from '../components/DashComponent.js';
-import HealthComponent from '../components/HealthComponent.js';
+import HitpointsComponent from '../components/HitpointsComponent.js';
 import ClimbComponent from '../components/ClimbComponent.js';
 
 export default class PlayerEntity extends Entity {
@@ -28,7 +28,10 @@ export default class PlayerEntity extends Entity {
       .addComponent(new JumpComponent())
       .addComponent(new DashComponent())
       .addComponent(new CrouchComponent())
-      .addComponent(new HealthComponent())
+
+    if (spec.hitpoints) {
+      this.addComponent(new HitpointsComponent(spec.hitpoints))
+    }
   }
 
   onCollide(entity: Entity, direction: Direction) {

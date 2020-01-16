@@ -68,6 +68,7 @@
       "id": 2,
       "name": "Mr Pew",
       "type": "player",
+      "hitpoints": 10,
       "size": {
         "x": 16,
         "y": 16
@@ -110,6 +111,7 @@
       "id": 3,
       "name": "Skelly",
       "type": "skeleton",
+      "hitpoints": 10,
       "size": {
         "x": 16,
         "y": 16
@@ -143,6 +145,7 @@
       "id": 4,
       "name": "grass",
       "type": "block",
+      "hitpoints": 10,
       "size": {
         "x": 16,
         "y": 16

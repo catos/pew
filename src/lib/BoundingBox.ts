@@ -11,6 +11,13 @@ export default class BoundingBox {
     this.offset = offset
   }
 
+  contains(number: Vector2) {
+    return number.x > this.left
+      && number.x < this.right
+      && number.y < this.bottom
+      && number.y > this.top
+  }
+
   overlaps(box: BoundingBox) {
     return this.bottom > box.top
       && this.top < box.bottom
