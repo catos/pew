@@ -1,5 +1,6 @@
 import System from './System.js'
 import darkenColors from '../../shaders/darkenColors.js'
+import { IPewEvent } from '../../core/InputHandler.js'
 
 export default class ShaderSystem extends System {
   showShaders: boolean
@@ -8,10 +9,8 @@ export default class ShaderSystem extends System {
     this.showShaders = true
   }
 
-  input = () => {
-    const { keysDown } = this.game.inputHandler
-
-    if (keysDown.has('F2')) {
+  input = (event: IPewEvent) => {
+    if (event.isKeyPressed('F2')) {
       this.showShaders = !this.showShaders
     }
   }

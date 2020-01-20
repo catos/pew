@@ -1,9 +1,8 @@
 import Canvas from './lib/Canvas.js'
 import Font from './core/Font.js'
 import Scene from './scene/Scene.js'
-import InputHandler from './core/InputHandler.js'
+import InputHandler, { IPewEvent } from './core/InputHandler.js'
 import Timer from './core/Timer.js'
-// import EventEmitter from './core/EventEmitter.js'
 
 export default class Game {
   name: string
@@ -14,7 +13,6 @@ export default class Game {
   timer: Timer
   width: number
   height: number
-  // EE = {}
 
   constructor(name: string, width: number, height: number) {
     this.name = name
@@ -23,9 +21,6 @@ export default class Game {
   }
 
   async init() {
-
-    // EventEmitter
-    // this.EE = new EventEmitter()
 
     // Canvas
     this.canvas = new Canvas('screen', this.width, this.height, this.name)
@@ -36,15 +31,13 @@ export default class Game {
 
     // Scene
     this.scene = new Scene(this, '/build/assets/levels/level-1.json')
-    // this.scene = new Scene(this, '/s/pew/assets/levels/level-editor-1.json')
     await this.scene.init()
 
     // Input
     // TODO: mappings // const mappings = await loadJSON('./js/inputMappings.json')
-    // TODO: make oneliner
+    // TODO: send canvas and camera only ?
     this.inputHandler = new InputHandler(this)
     this.inputHandler.listenTo(window, this.input)
-
     console.log('Game.init, finished: ', this)
 
     // Timer
@@ -55,8 +48,8 @@ export default class Game {
     console.log('Game started')
   }
 
-  input = () => {
-    this.scene.input()
+  input = (event: IPewEvent) => {
+    this.scene.input(event)
   }
 
   update = (dt: number) => {
@@ -64,10 +57,7 @@ export default class Game {
   }
 
   render = (dt: number) => {
-    // Clear canvas
     this.canvas.clear()
-
-    // Render scene
     this.scene.render(dt)
   }
 

@@ -1,14 +1,9 @@
 import System from './System.js'
-import Vector2 from '../../lib/Vector2.js'
-import { roundToNearest } from '../../lib/utils.js'
 
 import Layer from '../Layer.js'
-import ClimbComponent from '../components/ClimbComponent.js'
-import JumpComponent from '../components/JumpComponent.js'
-import HitboxComponent from '../components/HitboxComponent.js'
-import MovementComponent from '../components/MovementComponent.js'
 import TransformComponent from '../components/TransformComponent.js'
 import HitpointsComponent from '../components/HitpointsComponent.js'
+import { IPewEvent } from '../../core/InputHandler.js'
 
 export default class BreakableSystem extends System {
   layer: Layer
@@ -17,22 +12,25 @@ export default class BreakableSystem extends System {
     this.layer = this.scene.layers[0]
   }
 
-  input = () => {
-    const { keysDown, mouse } = this.game.inputHandler
+  input = (event: IPewEvent) => {
     // const pickaxe = this.player.getComponent<PickaxeComponent>('pickaxe')
+    // console.log(event)
 
-    // Jump
-    if (keysDown.has('KeyE')) {
-      const entity = this.layer.getEntity(mouse.position)
+    // Break block
+    if (event.isKeyPressed('KeyE')) {
+
+      console.log('break! @', event.position.x)
+      const entity = this.layer.getEntity(event.position)
       if (!entity) {
         return
       }
+
 
       const entityTransform = entity.getComponent<TransformComponent>('transform')
       const playerTransform = this.player.getComponent<TransformComponent>('transform')
       const distance = entityTransform.position.distance(playerTransform.position)
 
-      console.log(`break block @${mouse.position.x}, ${mouse.position.y} plz, block: ${entity ? entity.name : 'null'}, distance: ${distance}`)
+      console.log(`break block @${event.position.x}, ${event.position.y} plz, block: ${entity ? entity.name : 'null'}, distance: ${distance}`)
 
       // TODO: maek better filters
       if (distance < 32) {
@@ -47,7 +45,7 @@ export default class BreakableSystem extends System {
     }
   }
 
-  update = (dt: number) => {
+  update = () => {
     // this.scene.layers[0].entities
     //   .filter(entity => entity.hasComponents(['jump']))
     //   .forEach(entity => {

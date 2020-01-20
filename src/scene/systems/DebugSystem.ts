@@ -9,6 +9,7 @@ import DashComponent from '../components/DashComponent.js'
 import Entity from '../entities/Entity.js'
 import HitpointsComponent from '../components/HitpointsComponent.js'
 import Vector2 from '../../lib/Vector2.js'
+import { IPewEvent } from '../../core/InputHandler.js'
 
 interface IMenuItem {
   key: string,
@@ -32,13 +33,12 @@ export default class DebugSystem extends System {
     ]
   }
 
-  input = () => {
-    const { keysDown } = this.game.inputHandler
+  input = (event: IPewEvent) => {
 
-    if (keysDown.has('F1')) {
+    if (event.isKeyPressed('F1')) {
       this.showMenu = !this.showMenu
     }
-    if (keysDown.has('F3')) {
+    if (event.isKeyPressed('F3')) {
       this.showDebug = !this.showDebug
     }
   }
@@ -112,6 +112,7 @@ export default class DebugSystem extends System {
 
   drawDebug = () => {
     const { keysDown } = this.game.inputHandler
+
     const _keysDown = Object
       .keys(keysDown)
       .reduce((acc, key) => acc + ' ' + key, '')
@@ -134,7 +135,7 @@ export default class DebugSystem extends System {
       `FPS: ${t.fps.toFixed(4)}`,
       `TIMER: ${t.total.toFixed(4)}, ${t.accumulatedTime.toFixed(4)}, ${t.lastTime.toFixed(4)}, ${(1 / 60).toFixed(4)}`,
       `GRAVITY: ${gravity}`,
-      `MOUSE.POSITION: ${Math.floor(inputHandler.mouse.position.x)}, ${Math.floor(inputHandler.mouse.position.y)}`,
+      `MOUSE.POSITION: ${Math.floor(inputHandler.position.x)}, ${Math.floor(inputHandler.position.y)}`,
       `CAM.POS: ${cameraPosition.x.toFixed(2)}, ${cameraPosition.y.toFixed(2)}`,
       ` `,
       `P.POSITION: ${transform.position.x.toFixed(2)},${transform.position.y.toFixed(2)}`,
