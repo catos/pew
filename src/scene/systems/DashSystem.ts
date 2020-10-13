@@ -1,14 +1,14 @@
 import System from './System.js'
 import DashComponent from '../components/DashComponent.js'
 import MovementComponent from '../components/MovementComponent.js'
+import { IPewEvent } from '../../core/InputHandler.js'
 
 export default class DashSystem extends System {
-  input = () => {
-    const { keysDown } = this.game.inputHandler
+  input = (event: IPewEvent) => {
     const dash = this.player.getComponent<DashComponent>('dash')
 
     // Jump
-    if (keysDown.has('KeyP')) {
+    if (event.isKeyPressed('KeyP')) {
       if (dash.cooldown < 0) {
         dash.engagedTime = .3
         dash.cooldown = dash.TIMER

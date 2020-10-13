@@ -1,55 +1,74 @@
-import Vector2 from "../lib/Vector2.js"
-import Game from "../Game.js"
-import TransformComponent from "../scene/components/TransformComponent.js"
+import Vector2 from '../lib/Vector2.js'
+import Game from '../Game.js'
+import TransformComponent from '../scene/components/TransformComponent.js'
 
-
-interface IMouseInput {
-  isDown: boolean
+export interface IPewEvent extends UIEvent {
+  keysDown: Map<string, boolean>
   position: Vector2
+  isMousePressed: boolean
+  isKeyPressed: (key: string) => boolean
 }
 
 export default class InputHandler {
   game: Game
-  event: Event
-  mouse: IMouseInput
   keysDown: Map<string, boolean>
   mappedKeys: string[]
+  position: Vector2
 
   constructor(game: Game) {
     this.game = game
-    this.mouse = {
-      isDown: false,
-      position: Vector2.ZERO
-    }
     this.keysDown = new Map()
     this.mappedKeys = ['F1', 'F2', 'F3', 'F4', 'F5']
   }
 
-  listenTo = (window: Window, callback: () => void) => {
-    ['keydown', 'keyup'].forEach(eventName => {
-      window.addEventListener(eventName, (event: KeyboardEvent) => {
-        this.event = event
-        this.handleKeyEvent(event, callback)
+  listenTo = (window: Window, callback: (event: IPewEvent) => void) => {
+
+    ['keydown', 'keyup', 'mousedown', 'mouseup', 'mousemove'].forEach(eventName => {
+      window.addEventListener(eventName, (event: IPewEvent) => {
+
+        if (event instanceof KeyboardEvent) {
+          const { code, type } = event
+
+          // TODO: only handle configured keys ?
+          // if (!this.keyMap.has(code)) {
+          //   return
+          // }
+
+          // Prevent default behaviour on all configured keys
+          if (this.mappedKeys.find(p => p === code)) {
+            event.preventDefault()
+          }
+
+          // Prevent multifire
+          if (this.keysDown.has(code) && type === 'keydown') {
+            return
+          }
+
+          // Update keysdown
+          if (type === 'keydown') {
+            this.keysDown.set(code, true)
+          } else if (type === 'keyup') {
+            this.keysDown.delete(code)
+          }
+        }
+
+        if (event instanceof MouseEvent) {
+          this.position = this.getEventPosition(event)
+        }
+
+        event.keysDown = this.keysDown
+        event.position = this.position
+        event.isMousePressed = event.type === 'mousedown'
+        event.isKeyPressed = this.isKeyPressed(event)
+
+
+        // TODO: weird 3x output...
+        // console.log(this.keysDown)
+
+        callback(event)
       })
     })
 
-    window.addEventListener('mousedown', (event: MouseEvent) => {
-      this.event = event
-      this.mouse.isDown = true
-      callback()
-    })
-
-    window.addEventListener('mouseup', (event: MouseEvent) => {
-      this.event = event
-      this.mouse.isDown = false
-      callback()
-    })
-
-    window.addEventListener('mousemove', (event: MouseEvent) => {
-      this.event = event
-      this.mouse.position = this.getEventPosition(event)
-      callback()
-    })
   }
 
   getEventPosition = (event: MouseEvent) => {
@@ -62,37 +81,11 @@ export default class InputHandler {
     )
   }
 
-
-  handleKeyEvent = (event: KeyboardEvent, callback: () => void) => {
-    const { code, type } = event
-    // console.log(code, type);
-
-    // TODO: only handle configured keys ?
-    // if (!this.keyMap.has(code)) {
-    //   return
-    // }
-
-    // Prevent default behaviour on all configured keys
-    if (this.mappedKeys.find(p => p === code)) {
-      event.preventDefault()
+  isKeyPressed = (event: UIEvent) =>
+    (key: string) => {
+      const result = event.type === 'keydown' && this.keysDown.has(key)
+      // console.log(event.type, key, result)
+      return result
     }
 
-    // Prevent multifire
-    if (this.keysDown.has(code) && type === 'keydown') {
-      return
-    }
-
-    // Update keysdown
-    if (type === 'keydown') {
-      this.keysDown.set(code, true)
-    } else if (type === 'keyup') {
-      this.keysDown.delete(code)
-    }
-
-    // TODO: use EventEmitter on keys ?
-    // this.game.EE.emit(`KEY_DOWN_${keyCode}`)
-
-    // console.log(this.inputs.keysDown, code, type, event)
-    callback()
-  }
 }

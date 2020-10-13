@@ -24,6 +24,7 @@ import DashSystem from "./systems/DashSystem.js"
 import ShaderSystem from "./systems/ShaderSystem.js"
 import ClimbSystem from "./systems/ClimbSystem.js"
 import BreakableSystem from "./systems/BreakableSystem.js"
+import { IPewEvent } from "../core/InputHandler.js"
 
 export interface ILayerObjectSpec {
   entityId: number
@@ -135,8 +136,8 @@ export default class Scene {
     console.log('Scene.init', this);
   }
 
-  input = () => {
-    this.systems.forEach(system => system.input())
+  input = (event: IPewEvent) => {
+    this.systems.forEach(system => system.input(event))
   }
 
   update = (dt: number) => {

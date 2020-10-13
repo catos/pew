@@ -4,15 +4,15 @@ import ClimbComponent from '../components/ClimbComponent.js'
 import JumpComponent from '../components/JumpComponent.js'
 import HitboxComponent from '../components/HitboxComponent.js'
 import MovementComponent from '../components/MovementComponent.js'
+import { IPewEvent } from '../../core/InputHandler.js'
 
 export default class JumpSystem extends System {
 
-  input = () => {
-    const { keysDown } = this.game.inputHandler
+  input = (event: IPewEvent) => {
     const jump = this.player.getComponent<JumpComponent>('jump')
 
     // Jump
-    if (keysDown.has('KeyW') || keysDown.has('Space') ) {
+    if (event.isKeyPressed('KeyW') || event.isKeyPressed('Space')) {
       jump.jumpPressedTimer = 0.05
     }
   }

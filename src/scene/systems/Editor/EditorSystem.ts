@@ -7,6 +7,7 @@ import Vector2 from "../../../lib/Vector2.js";
 import Layer from "../../Layer.js";
 import TransformComponent from "../../components/TransformComponent.js";
 import CameraEntity from "../../entities/CameraEntity.js";
+import { IPewEvent } from "../../../core/InputHandler.js";
 
 interface IBrush {
   id: number
@@ -32,10 +33,9 @@ export default class EditorSystem extends System {
     this.currentLayer = this.scene.layers[0]
   }
 
-  input = () => {
-    const { mouse, event, keysDown } = this.game.inputHandler
+  input = (event: IPewEvent) => {
 
-    if (keysDown.has('F5')) {
+    if (event.isKeyPressed('F5')) {
       this.editorModeEnabled = !this.editorModeEnabled
     }
 
@@ -45,14 +45,14 @@ export default class EditorSystem extends System {
     }
 
     // Save level
-    if (keysDown.has('ShiftLeft') && keysDown.has('KeyS')) {
+    if (event.isKeyPressed('ShiftLeft') && event.isKeyPressed('KeyS')) {
       const name = 'level'
       const json = this.createLevelJSON(name, this.scene)
       download(json, `${name}.json`, 'text/plain')
     }
 
     // Change brush
-    if (keysDown.has('ShiftLeft') && keysDown.has('KeyX')) {
+    if (event.isKeyPressed('ShiftLeft') && event.isKeyPressed('KeyX')) {
       const current = this.brushes.find(p => p.current).id
       const next = current + 1 >= this.brushes.length ? 0 : current + 1
       this.brushes = this.brushes.map(brush => {
@@ -64,15 +64,15 @@ export default class EditorSystem extends System {
     }
 
     // Toggle show entities
-    if (keysDown.has('ShiftLeft') && keysDown.has('KeyC')) {
+    if (event.isKeyPressed('ShiftLeft') && event.isKeyPressed('KeyC')) {
       this.showEntities = !this.showEntities
     }
 
     // Draw block with current brush
-    if (event instanceof MouseEvent && mouse.isDown) {
+    if (event.isMousePressed) {
       const position = new Vector2(
-        roundToNearest(16, mouse.position.x - 8),
-        roundToNearest(16, mouse.position.y - 8)
+        roundToNearest(16, event.position.x - 8),
+        roundToNearest(16, event.position.y - 8)
       )
       // console.log(`mouseevent @${mouse.position.x}, ${mouse.position.y}, position: ${position.x}, ${position.y}`)
       this.addEntity(

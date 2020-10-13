@@ -2,6 +2,7 @@ import Scene from "../Scene"
 import CameraEntity from "../entities/CameraEntity"
 import PlayerEntity from "../entities/PlayerEntity"
 import Game from "../../Game"
+import { IPewEvent } from "../../core/InputHandler"
 
 export default class System {
   scene: Scene
@@ -20,7 +21,7 @@ export default class System {
 
   init() { }
 
-  input() { }
+  input(event: IPewEvent) { }
 
   update(dt: number) { }
 
