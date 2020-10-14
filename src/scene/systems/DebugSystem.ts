@@ -23,18 +23,17 @@ export default class DebugSystem extends System {
 
   init = () => {
     this.showMenu = true
-    this.showDebug = false
+    this.showDebug = true
     this.menu = [
-      { key: 'F1', title: 'TOGGLE' },
-      { key: 'F2', title: 'SHADRS' },
-      { key: 'F3', title: 'DEBUG' },
-      { key: 'F4', title: 'COLLIS' },
-      { key: 'F5', title: 'EDITOR' },
+      { key: 'F1', title: 'TGLE' },
+      { key: 'F2', title: 'SHDR' },
+      { key: 'F3', title: 'DEBG' },
+      { key: 'F4', title: 'COLL' },
+      { key: 'F5', title: 'EDIT' },
     ]
   }
 
   input = (event: IPewEvent) => {
-
     if (event.isKeyPressed('F1')) {
       this.showMenu = !this.showMenu
     }
@@ -69,7 +68,7 @@ export default class DebugSystem extends System {
       this.game.font.print(
         hitpoints.current.toString(),
         this.context,
-        position.x - cameraPosition.x,
+        position.x - cameraPosition.x + 2,
         position.y + 5 - cameraPosition.y)
     }
   }
@@ -83,7 +82,7 @@ export default class DebugSystem extends System {
         bounds.left - cameraPosition.x,
         bounds.top - cameraPosition.y,
         bounds.size.x,
-        bounds.size.y)
+        bounds.size.y)     
     }
 
   }
@@ -99,7 +98,7 @@ export default class DebugSystem extends System {
     let x = 8
     this.menu.forEach(item => {
       font.print(`${item.key}:${item.title}`, context, x, 4)
-      x += 8 * 9
+      x += 8 * 7
     })
 
     const objects = layers[0].entities
@@ -111,13 +110,7 @@ export default class DebugSystem extends System {
   }
 
   drawDebug = () => {
-    const { keysDown } = this.game.inputHandler
-
-    const _keysDown = Object
-      .keys(keysDown)
-      .reduce((acc, key) => acc + ' ' + key, '')
-
-    const { font, inputHandler, timer: t } = this.game
+    const { font, inputHandler: keyboardHandler, timer } = this.game
     const { gravity } = this.scene
 
     const { position: cameraPosition } = this.camera.getComponent<TransformComponent>('transform')
@@ -132,27 +125,43 @@ export default class DebugSystem extends System {
 
 
     const leftCol = [
-      `FPS: ${t.fps.toFixed(4)}`,
-      `TIMER: ${t.total.toFixed(4)}, ${t.accumulatedTime.toFixed(4)}, ${t.lastTime.toFixed(4)}, ${(1 / 60).toFixed(4)}`,
-      `GRAVITY: ${gravity}`,
-      `MOUSE.POSITION: ${Math.floor(inputHandler.position.x)}, ${Math.floor(inputHandler.position.y)}`,
-      `CAM.POS: ${cameraPosition.x.toFixed(2)}, ${cameraPosition.y.toFixed(2)}`,
-      ` `,
-      `P.POSITION: ${transform.position.x.toFixed(2)},${transform.position.y.toFixed(2)}`,
-      `P.VELOCTY: ${movement.velocity.x.toFixed(2)},${movement.velocity.y.toFixed(2)}`,
-      `P.DIRECTION: ${movement.direction}, P.HEAD: ${movement.heading}`,
-      `P.DISTANCE: ${movement.distance.toFixed(2)}`,
-      `P.COLLISION: ${hitbox.collision}`,
-      `P.ISCROUCHING: ${crouch.isCrouching}`,
-      `P.ISCLIMBING: ${climb.isClimbing}`,
+      `PLAYER:`,
+      `POSITION: ${transform.position.x.toFixed(2)},${transform.position.y.toFixed(2)}`,
+      `VELOCTY: ${movement.velocity.x.toFixed(2)},${movement.velocity.y.toFixed(2)}`,
+      `DIRECTION: ${movement.direction}, P.HEAD: ${movement.heading}`,
+      `DISTANCE: ${movement.distance.toFixed(2)}`,
+      `HITBOX: ${hitbox.bounds.size.x}, ${hitbox.bounds.size.y}`,
+      `COLLISION: ${hitbox.collision}`,
+      `ISCROUCHING: ${crouch.isCrouching}`,
+      `ISCLIMBING: ${climb.isClimbing}`,
       `JUMP.CANJUMP: ${jump.canJump}`,
-      `JUMP-TIMERS: ${jump.jumpPressedTimer.toFixed(4)}, ${jump.onGroundTimer.toFixed(4)}`,
-      `DASH: ${dash.cooldown.toFixed(4)}`,
-      ` `,
-      `KEYS DOWN: ${_keysDown}`,
-
+      `JUMP-TIMERS: ${jump.jumpPressedTimer.toFixed(2)}, ${jump.onGroundTimer.toFixed(2)}`,
+      `DASH: ${dash.cooldown.toFixed(2)}`,
     ]
+    
+    
     font.printArray(leftCol, this.context, 8, 16 * 18)
+    
+    const _keysDown = Array
+      .from(keyboardHandler.keysDown.keys())      
+      .reduce((acc, key) => acc + ' ' + key, '')
+
+    const rightCol = [
+      `FPS: ${timer.fps.toFixed(2)}`,
+      `TIMER: ${timer.total.toFixed(2)}, ${timer.accumulatedTime.toFixed(2)}, ${timer.lastTime.toFixed(2)}`,
+      `GRAVITY: ${gravity}`,
+      `CAM.POS: ${cameraPosition.x.toFixed(2)}, ${cameraPosition.y.toFixed(2)}`,
+      `KEYS DOWN: ${_keysDown}`,
+    ]
+
+    // TODO: needs mouseinputhandler...
+    // if (inputHandler.position) {
+    //   const [x, y] = [Math.floor(inputHandler.position.x), Math.floor(inputHandler.position.y)]
+    //   const [relX, relY] = [Math.floor(x - cameraPosition.x), Math.floor(y - cameraPosition.y)]
+    //   rightCol.push(`MOUSE: ${x}, ${y}`)
+    //   rightCol.push(`MOUSE (RELATIVE): ${relX}, ${relY}`)
+    // }
+    font.printArray(rightCol, this.context, 16 * 16, 16 * 18)
 
   }
 }

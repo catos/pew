@@ -106,13 +106,13 @@ export default class Scene {
       return new Layer(layerSpec, this.spec.entities)
     })
 
-    this.player = this.layers
-      .find(p => p.index === 1).entities
-      .find(p => p instanceof PlayerEntity)
+    this.player = this
+      .layers.find(p => p.index === 1)
+      .entities.find(p => p instanceof PlayerEntity)
 
-    this.camera = this.layers
-      .find(p => p.index === 1).entities
-      .find(p => p instanceof CameraEntity)
+    this.camera = this
+      .layers.find(p => p.index === 1)
+      .entities.find(p => p instanceof CameraEntity)
 
     // Register systems
     this.systems = [
@@ -132,8 +132,6 @@ export default class Scene {
       new DebugSystem(this),
     ]
     this.systems.forEach(system => system.init())
-
-    console.log('Scene.init', this);
   }
 
   input = (event: IPewEvent) => {

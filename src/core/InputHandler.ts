@@ -13,7 +13,7 @@ export default class InputHandler {
   game: Game
   keysDown: Map<string, boolean>
   mappedKeys: string[]
-  position: Vector2
+  // position: Vector2
 
   constructor(game: Game) {
     this.game = game
@@ -22,8 +22,9 @@ export default class InputHandler {
   }
 
   listenTo = (window: Window, callback: (event: IPewEvent) => void) => {
-
-    ['keydown', 'keyup', 'mousedown', 'mouseup', 'mousemove'].forEach(eventName => {
+    // TODO: move to separate MouseInputHandler ?
+    // , 'mousedown', 'mouseup', 'mousemove'
+    ['keydown', 'keyup'].forEach(eventName => {
       window.addEventListener(eventName, (event: IPewEvent) => {
 
         if (event instanceof KeyboardEvent) {
@@ -52,18 +53,15 @@ export default class InputHandler {
           }
         }
 
-        if (event instanceof MouseEvent) {
-          this.position = this.getEventPosition(event)
-        }
+        // TODO: move to separate MouseInputHandler ?
+        // if (event instanceof MouseEvent) {
+        //   this.position = this.getEventPosition(event)
+        // }
+        // event.position = this.position
 
         event.keysDown = this.keysDown
-        event.position = this.position
         event.isMousePressed = event.type === 'mousedown'
         event.isKeyPressed = this.isKeyPressed(event)
-
-
-        // TODO: weird 3x output...
-        // console.log(this.keysDown)
 
         callback(event)
       })

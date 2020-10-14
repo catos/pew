@@ -1,247 +1,99 @@
 {
-  "name": "level-1",
+  "name": "level",
   "gravity": 1500,
   "layers": [
     {
       "index": 1,
       "name": "layer-2",
       "objects": [
-        {
-          "entityId": 1,
-          "x": 0,
-          "y": 0
-        },
-        {
-          "entityId": 2,
-          "x": 32,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 0,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 16,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 32,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 48,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 64,
-          "y": 176
-        },
-        {
-          "entityId": 5,
-          "x": 64,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 80,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 96,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 112,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 128,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 144,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 160,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 176,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 192,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 208,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 224,
-          "y": 176
-        },
-        {
-          "entityId": 4,
-          "x": 224,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 240,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 256,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 272,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 288,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 304,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 320,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 336,
-          "y": 160
-        },
-        {
-          "entityId": 4,
-          "x": 256,
-          "y": 80
-        },
-        {
-          "entityId": 4,
-          "x": 272,
-          "y": 80
-        },
-        {
-          "entityId": 4,
-          "x": 240,
-          "y": 80
-        }
+        { "entityId": 1, "x": 128, "y": 0 },
+        { "entityId": 2, "x": 256, "y": 144 },
+        { "entityId": 4, "x": 0, "y": 176 },
+        { "entityId": 4, "x": 16, "y": 176 },
+        { "entityId": 4, "x": 32, "y": 176 },
+        { "entityId": 4, "x": 48, "y": 176 },
+        { "entityId": 4, "x": 64, "y": 176 },
+        { "entityId": 5, "x": 64, "y": 160 },
+        { "entityId": 4, "x": 80, "y": 176 },
+        { "entityId": 4, "x": 96, "y": 176 },
+        { "entityId": 4, "x": 112, "y": 176 },
+        { "entityId": 4, "x": 128, "y": 176 },
+        { "entityId": 4, "x": 144, "y": 176 },
+        { "entityId": 4, "x": 160, "y": 176 },
+        { "entityId": 4, "x": 176, "y": 176 },
+        { "entityId": 4, "x": 192, "y": 176 },
+        { "entityId": 4, "x": 208, "y": 176 },
+        { "entityId": 4, "x": 224, "y": 176 },
+        { "entityId": 4, "x": 224, "y": 160 },
+        { "entityId": 4, "x": 240, "y": 160 },
+        { "entityId": 4, "x": 256, "y": 160 },
+        { "entityId": 4, "x": 272, "y": 160 },
+        { "entityId": 4, "x": 288, "y": 160 },
+        { "entityId": 4, "x": 304, "y": 160 },
+        { "entityId": 4, "x": 320, "y": 160 },
+        { "entityId": 4, "x": 336, "y": 160 },
+        { "entityId": 4, "x": 256, "y": 80 },
+        { "entityId": 4, "x": 272, "y": 80 },
+        { "entityId": 4, "x": 240, "y": 80 },
+        { "entityId": 4, "x": 352, "y": 176 },
+        { "entityId": 4, "x": 384, "y": 176 },
+        { "entityId": 4, "x": 368, "y": 176 },
+        { "entityId": 4, "x": 400, "y": 176 },
+        { "entityId": 4, "x": 416, "y": 176 },
+        { "entityId": 4, "x": 448, "y": 176 },
+        { "entityId": 4, "x": 464, "y": 176 },
+        { "entityId": 4, "x": 480, "y": 176 },
+        { "entityId": 4, "x": 496, "y": 176 },
+        { "entityId": 4, "x": 512, "y": 176 },
+        { "entityId": 4, "x": 544, "y": 176 },
+        { "entityId": 4, "x": 576, "y": 176 },
+        { "entityId": 4, "x": 608, "y": 176 },
+        { "entityId": 4, "x": 592, "y": 176 },
+        { "entityId": 4, "x": 560, "y": 176 },
+        { "entityId": 4, "x": 528, "y": 176 },
+        { "entityId": 4, "x": 432, "y": 176 },
+        { "entityId": 4, "x": 384, "y": 112 },
+        { "entityId": 4, "x": 400, "y": 112 },
+        { "entityId": 4, "x": 416, "y": 112 },
+        { "entityId": 4, "x": 432, "y": 112 },
+        { "entityId": 4, "x": 528, "y": 112 },
+        { "entityId": 4, "x": 528, "y": 96 },
+        { "entityId": 4, "x": 528, "y": 80 },
+        { "entityId": 4, "x": 528, "y": 64 },
+        { "entityId": 4, "x": 528, "y": 48 },
+        { "entityId": 4, "x": 480, "y": 144 }
       ]
     },
-    {
-      "index": 2,
-      "name": "layer-3",
-      "objects": []
-    }
+    { "index": 2, "name": "layer-3", "objects": [] }
   ],
   "entities": [
     {
       "id": 1,
       "name": "camera1",
       "type": "camera",
-      "size": {
-        "x": 256,
-        "y": 224
-      }
+      "size": { "x": 256, "y": 224 }
     },
     {
       "id": 2,
       "name": "Mr Pew",
       "type": "player",
-      "size": {
-        "x": 16,
-        "y": 16
-      },
-      "hitbox": {
-        "size": {
-          "x": 8,
-          "y": 6
-        },
-        "offset": {
-          "x": 4,
-          "y": 10
-        }
-      },
+      "size": { "x": 16, "y": 16 },
+      "hitbox": { "size": { "x": 8, "y": 8 }, "offset": { "x": 4, "y": 8 } },
       "animations": [
-        {
-          "name": "idle",
-          "frames": [
-            1
-          ]
-        },
-        {
-          "name": "walk",
-          "frames": [
-            1,
-            2,
-            3,
-            4
-          ]
-        },
-        {
-          "name": "crouch",
-          "frames": [
-            5
-          ]
-        }
+        { "name": "idle", "frames": [1] },
+        { "name": "walk", "frames": [1, 2, 3, 4] },
+        { "name": "crouch", "frames": [5] }
       ]
     },
     {
       "id": 3,
       "name": "Skelly",
       "type": "skeleton",
-      "size": {
-        "x": 16,
-        "y": 16
-      },
-      "hitbox": {
-        "size": {
-          "x": 8,
-          "y": 12
-        },
-        "offset": {
-          "x": 4,
-          "y": 4
-        }
-      },
+      "size": { "x": 16, "y": 16 },
+      "hitbox": { "size": { "x": 8, "y": 12 }, "offset": { "x": 4, "y": 4 } },
       "animations": [
-        {
-          "name": "idle",
-          "frames": [
-            33
-          ]
-        },
-        {
-          "name": "walk",
-          "frames": [
-            33
-          ]
-        }
+        { "name": "idle", "frames": [33] },
+        { "name": "walk", "frames": [33] }
       ]
     },
     {
@@ -249,50 +101,17 @@
       "name": "grass",
       "type": "block",
       "hitpoints": 10,
-      "size": {
-        "x": 16,
-        "y": 16
-      },
-      "hitbox": {
-        "size": {
-          "x": 16,
-          "y": 16
-        },
-        "offset": {
-          "x": 0,
-          "y": 0
-        }
-      },
-      "animations": [
-        {
-          "name": "idle",
-          "frames": [
-            51
-          ]
-        }
-      ]
+      "size": { "x": 16, "y": 16 },
+      "hitbox": { "size": { "x": 16, "y": 16 }, "offset": { "x": 0, "y": 0 } },
+      "animations": [{ "name": "idle", "frames": [51] }]
     },
     {
       "id": 5,
       "name": "small_stone",
       "type": "decoration",
-      "size": {
-        "x": 16,
-        "y": 16
-      },
-      "animations": [
-        {
-          "name": "idle",
-          "frames": [
-            97
-          ]
-        }
-      ]
+      "size": { "x": 16, "y": 16 },
+      "animations": [{ "name": "idle", "frames": [97] }]
     }
   ],
-  "tileset": {
-    "name": "sprites.png",
-    "tileWidth": "16",
-    "tileHeight": "16"
-  }
+  "tileset": { "name": "sprites.png", "tileWidth": "16", "tileHeight": "16" }
 }
