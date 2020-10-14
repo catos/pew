@@ -92,67 +92,75 @@ export default class Scene {
   }
 
   init = async () => {
-    this.spec = await loadJSON(this.url);
+    this.spec = await loadJSON(this.url)
     this.gravity = this.spec.gravity
 
     // Tileset
     const { name, tileWidth, tileHeight } = this.spec.tileset
     const image = await loadImage(`./assets/gfx/${name}`)
-    this.tileset = new Tileset('sprites', image, tileWidth, tileHeight)
+    this.tileset = new Tileset("sprites", image, tileWidth, tileHeight)
     this.tileset.defineTiles()
 
     // Layers
-    this.layers = this.spec.layers.map(layerSpec => {
-      return new Layer(layerSpec, this.spec.entities)
+    this.layers = this.spec.layers.map((layerSpec) => {
+      return new Layer(this, layerSpec, this.spec.entities)
     })
 
-    this.player = this
-      .layers.find(p => p.index === 1)
-      .entities.find(p => p instanceof PlayerEntity)
+    this.player = this.layers
+      .find((p) => p.index === 1)
+      .entities.find((p) => p instanceof PlayerEntity)
 
-    this.camera = this
-      .layers.find(p => p.index === 1)
-      .entities.find(p => p instanceof CameraEntity)
+    this.camera = this.layers
+      .find((p) => p.index === 1)
+      .entities.find((p) => p instanceof CameraEntity)
 
     // Register systems
-    this.systems = [
-      new CameraSystem(this.player, this),
-      new RenderSystem(this),
-      new UISystem(this),
-      new MovementSystem(this),
-      new CollisionSystem(this),
-      new ClimbSystem(this),
-      new JumpSystem(this),
-      new DashSystem(this),
-      new CrouchSystem(this),
-      new ClockSystem(this),
-      new BreakableSystem(this),
-      new EditorSystem(this),
-      new ShaderSystem(this),
-      new DebugSystem(this),
-    ]
-    this.systems.forEach(system => system.init())
+    this.addSystem(new CameraSystem(this.player, this))
+      .addSystem(new RenderSystem(this))
+      .addSystem(new UISystem(this))
+      .addSystem(new MovementSystem(this))
+      .addSystem(new CollisionSystem(this))
+      .addSystem(new ClimbSystem(this))
+      .addSystem(new JumpSystem(this))
+      .addSystem(new DashSystem(this))
+      .addSystem(new CrouchSystem(this))
+      .addSystem(new ClockSystem(this))
+      .addSystem(new BreakableSystem(this))
+      .addSystem(new EditorSystem(this))
+      .addSystem(new ShaderSystem(this))
+      .addSystem(new DebugSystem(this))
+
+    // Init all systems
+    this.systems.forEach((system) => system.init())
   }
 
   input = (event: IPewEvent) => {
-    this.systems.forEach(system => system.input(event))
+    this.systems.forEach((system) => system.input(event))
   }
 
   update = (dt: number) => {
-    this.systems.forEach(system => system.update(dt))
+    this.systems.forEach((system) => system.update(dt))
   }
 
   render = (dt: number) => {
     const { context } = this.game.canvas
     // Paint blue background
-    const gradient = context.createLinearGradient(0, 0, 0, 16 * 16);
-    gradient.addColorStop(0, '#38c0fc');
-    gradient.addColorStop(.5, 'cyan');
-    gradient.addColorStop(.75, 'black');
+    const gradient = context.createLinearGradient(0, 0, 0, 16 * 16)
+    gradient.addColorStop(0, "#38c0fc")
+    gradient.addColorStop(0.5, "cyan")
+    gradient.addColorStop(0.75, "black")
     context.fillStyle = gradient
     // context.fillStyle = '#cbdbfc'
 
-    this.systems.forEach(system => system.render(dt))
+    this.systems.forEach((system) => system.render(dt))
   }
 
+  getSystem = <T extends System>(name: string): T => {
+    return this.systems.find((p) => p.name === name) as T
+  }
+
+  addSystem = (system: System) => {
+    this.systems.push(system)
+    return this
+  }
 }

@@ -1,34 +1,38 @@
-import System from './System.js'
-import { Sides } from './CollisionSystem.js'
-import ClimbComponent from '../components/ClimbComponent.js'
-import JumpComponent from '../components/JumpComponent.js'
-import HitboxComponent from '../components/HitboxComponent.js'
-import MovementComponent from '../components/MovementComponent.js'
-import { IPewEvent } from '../../core/InputHandler.js'
+import System from "./System.js"
+import { Sides } from "./CollisionSystem.js"
+import ClimbComponent from "../components/ClimbComponent.js"
+import JumpComponent from "../components/JumpComponent.js"
+import HitboxComponent from "../components/HitboxComponent.js"
+import MovementComponent from "../components/MovementComponent.js"
+import { IPewEvent } from "../../core/InputHandler.js"
+import Scene from "../Scene.js"
 
 export default class JumpSystem extends System {
+  constructor(scene: Scene) {
+    super("jump", scene)
+  }
 
   input = (event: IPewEvent) => {
-    const jump = this.player.getComponent<JumpComponent>('jump')
+    const jump = this.player.getComponent<JumpComponent>("jump")
 
     // Jump
-    if (event.isKeyPressed('KeyW') || event.isKeyPressed('Space')) {
+    if (event.isKeyPressed("KeyW") || event.isKeyPressed("Space")) {
       jump.jumpPressedTimer = 0.05
     }
   }
 
   update = (dt: number) => {
     this.scene.layers[0].entities
-      .filter(entity => entity.hasComponents(['jump']))
-      .forEach(entity => {
-        const jump = entity.getComponent<JumpComponent>('jump')
-        const climb = entity.getComponent<ClimbComponent>('climb')
-        const hitbox = entity.getComponent<HitboxComponent>('hitbox')
-        const movement = entity.getComponent<MovementComponent>('movement')
+      .filter((entity) => entity.hasComponents(["jump"]))
+      .forEach((entity) => {
+        const jump = entity.getComponent<JumpComponent>("jump")
+        const climb = entity.getComponent<ClimbComponent>("climb")
+        const hitbox = entity.getComponent<HitboxComponent>("hitbox")
+        const movement = entity.getComponent<MovementComponent>("movement")
 
         // Cancel jump if collision on top
         if (hitbox.collision === Sides.TOP) {
-          console.log('Cancel jump if collision on top');
+          console.log("Cancel jump if collision on top")
 
           jump.engagedTime = 0
         }
@@ -54,11 +58,12 @@ export default class JumpSystem extends System {
 
         // Add jump to velocity
         if (jump.engagedTime > 0) {
-          movement.velocity.y = -(jump.velocity + Math.abs(movement.velocity.x) * jump.speedBoost)
+          movement.velocity.y = -(
+            jump.velocity +
+            Math.abs(movement.velocity.x) * jump.speedBoost
+          )
           jump.engagedTime -= dt
         }
-
       })
   }
-
 }

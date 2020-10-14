@@ -5,13 +5,15 @@ import Game from "../../Game"
 import { IPewEvent } from "../../core/InputHandler"
 
 export default class System {
+  name: string
   scene: Scene
   camera: CameraEntity
   player: PlayerEntity
   game: Game
   context: CanvasRenderingContext2D
 
-  constructor(scene: Scene) {
+  constructor(name: string, scene: Scene) {
+    this.name = name
     this.scene = scene
     this.camera = scene.camera
     this.player = scene.player
@@ -19,12 +21,11 @@ export default class System {
     this.context = scene.game.canvas.context
   }
 
-  init() { }
+  init() {}
 
-  input(event: IPewEvent) { }
+  input(event: IPewEvent) {}
 
-  update(dt: number) { }
+  update(dt: number) {}
 
-  render(dt: number) { }
-
+  render(dt: number) {}
 }

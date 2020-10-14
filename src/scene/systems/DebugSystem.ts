@@ -10,6 +10,8 @@ import Entity from "../entities/Entity.js"
 import HitpointsComponent from "../components/HitpointsComponent.js"
 import Vector2 from "../../lib/Vector2.js"
 import { IPewEvent } from "../../core/InputHandler.js"
+import Scene from "../Scene.js"
+import CollisionSystem from "./CollisionSystem.js"
 
 interface IMenuItem {
   key: string
@@ -20,6 +22,10 @@ export default class DebugSystem extends System {
   showMenu: boolean
   showDebug: boolean
   menu: IMenuItem[]
+
+  constructor(scene: Scene) {
+    super("debug", scene)
+  }
 
   init = () => {
     this.showMenu = true
@@ -129,7 +135,7 @@ export default class DebugSystem extends System {
     const transform = this.player.getComponent<TransformComponent>("transform")
     const crouch = this.player.getComponent<CrouchComponent>("crouch")
 
-    const leftCol = [
+    const playerDebug = [
       `PLAYER:`,
       `POSITION: ${transform.position.x.toFixed(
         2
@@ -150,12 +156,15 @@ export default class DebugSystem extends System {
       `DASH: ${dash.cooldown.toFixed(2)}`,
     ]
 
-    font.printArray(leftCol, this.context, 8, 16 * 18)
+    font.printArray(playerDebug, this.context, 8, 16 * 18)
 
     const _keysDown = Array.from(inputHandler.keysDown.keys()).reduce(
       (acc, key) => acc + " " + key,
       ""
     )
+
+    // Collision candidates
+    const cs = this.scene.getSystem("collision") as CollisionSystem
 
     const rightCol = [
       `FPS: ${timer.fps.toFixed(2)}`,
@@ -165,6 +174,8 @@ export default class DebugSystem extends System {
       `GRAVITY: ${gravity}`,
       `CAM.POS: ${cameraPosition.x.toFixed(2)}, ${cameraPosition.y.toFixed(2)}`,
       `KEYS DOWN: ${_keysDown}`,
+      "",
+      `COL.CANDIDATES: ${cs.candidates.length}`,
     ]
 
     // TODO: needs mouseinputhandler...

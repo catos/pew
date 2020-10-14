@@ -54,10 +54,10 @@ export default class InputHandler {
             }
           }
 
-          event.position =
-            event instanceof MouseEvent
-              ? this.getEventPosition(event)
-              : Vector2.ZERO
+          if (event instanceof MouseEvent) {
+            this.position = this.getEventPosition(event)
+          }
+          event.position = this.position
           event.isMousePressed = event.type === "mousedown"
           event.keysDown = this.keysDown
           event.isKeyPressed = this.isKeyPressed(event)

@@ -1,9 +1,10 @@
-import System from './System.js'
-import Entity from '../entities/Entity.js'
-import HitboxComponent from '../components/HitboxComponent.js'
-import TransformComponent from '../components/TransformComponent.js'
-import MovementComponent from '../components/MovementComponent.js'
-import { IPewEvent } from '../../core/InputHandler.js'
+import System from "./System.js"
+import Entity from "../entities/Entity.js"
+import HitboxComponent from "../components/HitboxComponent.js"
+import TransformComponent from "../components/TransformComponent.js"
+import MovementComponent from "../components/MovementComponent.js"
+import { IPewEvent } from "../../core/InputHandler.js"
+import Scene from "../Scene.js"
 
 export enum Sides {
   NONE = 0,
@@ -15,46 +16,48 @@ export enum Sides {
 
 export enum Direction {
   Horizontal = 0,
-  Vertical = 1
+  Vertical = 1,
 }
 
 export default class CollisionSystem extends System {
-
   showCollisions: boolean
   candidates: Entity[]
+
+  constructor(scene: Scene) {
+    super("collision", scene)
+  }
 
   init = () => {
     this.showCollisions = false
 
     // TODO: fix layers[0] (DO A SEARCH)
     // TODO: optimize search
-    this.candidates = this.scene.layers[0]
-      .entities
-      .filter(entity => entity.hasComponents(['hitbox']))
+    this.candidates = this.scene.layers[0].entities.filter((entity) =>
+      entity.hasComponents(["hitbox"])
+    )
   }
 
   input = (event: IPewEvent) => {
-    if (event.isKeyPressed('F4')) {
+    if (event.isKeyPressed("F4")) {
       this.showCollisions = !this.showCollisions
     }
   }
 
   update = (dt: number) => {
+    const entities = this.scene.layers[0].entities.filter((entity) =>
+      entity.hasComponents(["hitbox", "movement"])
+    )
 
-    const entities = this.scene.layers[0]
-      .entities
-      .filter(entity => entity.hasComponents(['hitbox', 'movement']))
-
-    entities.forEach(entity => {
-      const movement = entity.getComponent<MovementComponent>('movement')
+    entities.forEach((entity) => {
+      const movement = entity.getComponent<MovementComponent>("movement")
 
       // Abort if no movement
       if (movement.velocity.x === 0 && movement.velocity.y === 0) {
         return
       }
 
-      const hitbox = entity.getComponent<HitboxComponent>('hitbox')
-      const transform = entity.getComponent<TransformComponent>('transform')
+      const hitbox = entity.getComponent<HitboxComponent>("hitbox")
+      const transform = entity.getComponent<TransformComponent>("transform")
 
       hitbox.collision = Sides.NONE
 
@@ -72,14 +75,15 @@ export default class CollisionSystem extends System {
 
     if (this.showCollisions) {
       // Render hitbox
-      this.scene.layers[0]
-        .entities
-        .filter(entity => entity.hasComponents(['hitbox']))
-        .forEach(entity => {
-          const hitbox = entity.getComponent<HitboxComponent>('hitbox')
-          const cameraTransform = this.camera.getComponent<TransformComponent>('transform')
+      this.scene.layers[0].entities
+        .filter((entity) => entity.hasComponents(["hitbox"]))
+        .forEach((entity) => {
+          const hitbox = entity.getComponent<HitboxComponent>("hitbox")
+          const cameraTransform = this.camera.getComponent<TransformComponent>(
+            "transform"
+          )
 
-          this.context.fillStyle = '#0000bb66';
+          this.context.fillStyle = "#0000bb66"
           this.context.fillRect(
             hitbox.bounds.left - cameraTransform.position.x,
             hitbox.bounds.top - cameraTransform.position.y,
@@ -89,7 +93,7 @@ export default class CollisionSystem extends System {
 
           // TODO: draw ALL collisions....
           if (hitbox.collision !== Sides.NONE) {
-            this.context.fillStyle = '#bb000066';
+            this.context.fillStyle = "#bb000066"
             this.context.fillRect(
               hitbox.bounds.left - cameraTransform.position.x,
               hitbox.bounds.top - cameraTransform.position.y,
@@ -103,15 +107,15 @@ export default class CollisionSystem extends System {
 
   check = (entity: Entity, direction: Direction) => {
     this.candidates
-      .filter(candidate => candidate !== entity) // Dont check collisions on yourself
-      .forEach(candidate => {
-        const ehb = entity.getComponent<HitboxComponent>('hitbox')
-        const chb = candidate.getComponent<HitboxComponent>('hitbox')
+      .filter((candidate) => candidate !== entity) // Dont check collisions on yourself
+      .forEach((candidate) => {
+        const ehb = entity.getComponent<HitboxComponent>("hitbox")
+        const chb = candidate.getComponent<HitboxComponent>("hitbox")
 
         // Entity overlaps with others ?
         if (ehb.bounds.overlaps(chb.bounds)) {
           entity.onCollide(candidate, direction)
         }
-      });
+      })
   }
 }

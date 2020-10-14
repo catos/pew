@@ -1,20 +1,24 @@
-import System from './System.js'
-import MovementComponent from '../components/MovementComponent.js'
-import DashComponent from '../components/DashComponent.js'
+import System from "./System.js"
+import MovementComponent from "../components/MovementComponent.js"
+import DashComponent from "../components/DashComponent.js"
+import Scene from "../Scene.js"
 
 export default class MovementSystem extends System {
+  constructor(scene: Scene) {
+    super("movement", scene)
+  }
 
   input = () => {
-    const movement = this.player.getComponent<MovementComponent>('movement')
-    const dash = this.player.getComponent<DashComponent>('dash')
+    const movement = this.player.getComponent<MovementComponent>("movement")
+    const dash = this.player.getComponent<DashComponent>("dash")
     const { keysDown } = this.game.inputHandler
 
     // Right
-    if (keysDown.has('KeyD') && dash.engagedTime <= 0) {
+    if (keysDown.has("KeyD") && dash.engagedTime <= 0) {
       movement.direction = 1
     }
     // Left
-    else if (keysDown.has('KeyA') && dash.engagedTime <= 0) {
+    else if (keysDown.has("KeyA") && dash.engagedTime <= 0) {
       movement.direction = -1
     }
     // No direction
@@ -25,10 +29,9 @@ export default class MovementSystem extends System {
 
   update = (dt: number) => {
     this.scene.layers[0].entities
-      .filter(entity => entity.hasComponents(['transform', 'movement']))
-      .forEach(entity => {
-
-        const movement = entity.getComponent<MovementComponent>('movement')
+      .filter((entity) => entity.hasComponents(["transform", "movement"]))
+      .forEach((entity) => {
+        const movement = entity.getComponent<MovementComponent>("movement")
 
         const currentXVelocity = Math.abs(movement.velocity.x)
 
@@ -39,8 +42,8 @@ export default class MovementSystem extends System {
         }
         // Decelerate
         else if (movement.velocity.x !== 0) {
-          const decel = Math.min(currentXVelocity, movement.deceleration * dt);
-          movement.velocity.x += movement.velocity.x > 0 ? -decel : decel;
+          const decel = Math.min(currentXVelocity, movement.deceleration * dt)
+          movement.velocity.x += movement.velocity.x > 0 ? -decel : decel
         }
         // Reset distance moved when standing still
         else {
@@ -48,7 +51,8 @@ export default class MovementSystem extends System {
         }
 
         // Drag
-        const drag = movement.dragFactor * movement.velocity.x * currentXVelocity
+        const drag =
+          movement.dragFactor * movement.velocity.x * currentXVelocity
         movement.velocity.x -= drag
 
         // Distance
@@ -57,8 +61,6 @@ export default class MovementSystem extends System {
         // Apply gravity
         const gravity = this.scene.gravity
         movement.velocity.y = movement.velocity.y + gravity * dt
-
       })
   }
-
 }

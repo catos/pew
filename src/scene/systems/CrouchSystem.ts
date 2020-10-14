@@ -1,27 +1,29 @@
-import System from './System.js'
-import HitboxComponent from '../components/HitboxComponent.js'
-import CrouchComponent from '../components/CrouchComponent.js'
-import { IPewEvent } from '../../core/InputHandler.js'
+import System from "./System.js"
+import HitboxComponent from "../components/HitboxComponent.js"
+import CrouchComponent from "../components/CrouchComponent.js"
+import { IPewEvent } from "../../core/InputHandler.js"
+import Scene from "../Scene.js"
 
 export default class CrouchSystem extends System {
+  constructor(scene: Scene) {
+    super("crouch", scene)
+  }
 
   input = (event: IPewEvent) => {
-    const hitbox = this.player.getComponent<HitboxComponent>('hitbox')
-    const crouch = this.player.getComponent<CrouchComponent>('crouch')
+    const hitbox = this.player.getComponent<HitboxComponent>("hitbox")
+    const crouch = this.player.getComponent<CrouchComponent>("crouch")
 
-    if (event.isKeyPressed('KeyS')) {
+    if (event.isKeyPressed("KeyS")) {
       if (!crouch.isCrouching) {
         crouch.isCrouching = true
-        const newY = hitbox.bounds.size.y * .5
+        const newY = hitbox.bounds.size.y * 0.5
         hitbox.bounds.size.y = newY
         hitbox.bounds.offset.y += newY
       }
-    }
-    else {
+    } else {
       crouch.isCrouching = false
       hitbox.bounds.size.y = hitbox.originalSize.y
       hitbox.bounds.offset.y = hitbox.originalOffset.y
     }
   }
-
 }

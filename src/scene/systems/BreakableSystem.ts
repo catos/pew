@@ -1,12 +1,17 @@
-import System from './System.js'
+import System from "./System.js"
 
-import Layer from '../Layer.js'
-import TransformComponent from '../components/TransformComponent.js'
-import HitpointsComponent from '../components/HitpointsComponent.js'
-import { IPewEvent } from '../../core/InputHandler.js'
+import Layer from "../Layer.js"
+import TransformComponent from "../components/TransformComponent.js"
+import HitpointsComponent from "../components/HitpointsComponent.js"
+import { IPewEvent } from "../../core/InputHandler.js"
+import Scene from "../Scene.js"
 
 export default class BreakableSystem extends System {
   layer: Layer
+
+  constructor(scene: Scene) {
+    super("breakable", scene)
+  }
 
   init = () => {
     this.layer = this.scene.layers[0]
@@ -17,28 +22,34 @@ export default class BreakableSystem extends System {
     // console.log(event)
 
     // Break block
-    if (event.isKeyPressed('KeyE')) {
-
-      console.log('break! @', event.position.x)
+    if (event.isKeyPressed("KeyE")) {
       const entity = this.layer.getEntity(event.position)
       if (!entity) {
         return
       }
 
+      const entityTransform = entity.getComponent<TransformComponent>(
+        "transform"
+      )
+      const playerTransform = this.player.getComponent<TransformComponent>(
+        "transform"
+      )
+      const distance = entityTransform.position.distance(
+        playerTransform.position
+      )
 
-      const entityTransform = entity.getComponent<TransformComponent>('transform')
-      const playerTransform = this.player.getComponent<TransformComponent>('transform')
-      const distance = entityTransform.position.distance(playerTransform.position)
+      // console.log(
+      //   `break block @${event.position.x}, ${event.position.y} plz, block: ${
+      //     entity ? entity.name : "null"
+      //   }, distance: ${distance}`
+      // )
 
-      console.log(`break block @${event.position.x}, ${event.position.y} plz, block: ${entity ? entity.name : 'null'}, distance: ${distance}`)
-
-      // TODO: maek better filters
+      // TODO: maek better filters & check if breakable
       if (distance < 32) {
-        const hitpoints = entity.getComponent<HitpointsComponent>('hitpoints')
+        const hitpoints = entity.getComponent<HitpointsComponent>("hitpoints")
         hitpoints.current -= 1
 
         if (hitpoints.current <= 0) {
-          console.log('del entity with id = ' + entity.guid)
           this.layer.deleteEntity(entity.guid)
         }
       }
@@ -53,8 +64,6 @@ export default class BreakableSystem extends System {
     //     const climb = entity.getComponent<ClimbComponent>('climb')
     //     const hitbox = entity.getComponent<HitboxComponent>('hitbox')
     //     const movement = entity.getComponent<MovementComponent>('movement')
-
     //   })
   }
-
 }
