@@ -110,12 +110,13 @@ export default class Scene {
       .find((p) => p.index === 1)
       .entities.find((p) => p instanceof PlayerEntity)
 
+    // "size": { "x": 256, "y": 224 }
     this.camera = this.layers
       .find((p) => p.index === 1)
       .entities.find((p) => p instanceof CameraEntity)
 
     // Register systems
-    this.addSystem(new CameraSystem(this.player, this))
+    this.addSystem(new CameraSystem(this.camera, this.player, this))
       .addSystem(new RenderSystem(this))
       .addSystem(new UISystem(this))
       .addSystem(new MovementSystem(this))

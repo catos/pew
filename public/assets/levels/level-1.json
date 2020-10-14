@@ -71,7 +71,7 @@
       "id": 1,
       "name": "camera1",
       "type": "camera",
-      "size": { "x": 256, "y": 224 }
+      "size": { "x": 24, "y": 24 }
     },
     {
       "id": 2,

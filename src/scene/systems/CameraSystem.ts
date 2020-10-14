@@ -2,40 +2,45 @@ import System from "./System.js"
 import CameraEntity from "../entities/CameraEntity.js"
 import Scene from "../Scene.js"
 import TransformComponent from "../components/TransformComponent.js"
+import PlayerEntity from "../entities/PlayerEntity.js"
 
 export default class CameraSystem extends System {
-  entity: CameraEntity
+  camera: CameraEntity
+  player: PlayerEntity
 
-  constructor(entity: CameraEntity, scene: Scene) {
+  constructor(camera: CameraEntity, player: PlayerEntity, scene: Scene) {
     super("camera", scene)
-    this.entity = entity
+    this.camera = camera
+    this.player = player
   }
 
   update = (dt: number) => {
-    const transform = this.camera.getComponent<TransformComponent>("transform")
-    const entityTransform = this.entity.getComponent<TransformComponent>(
+    const cameraTransform = this.camera.getComponent<TransformComponent>(
+      "transform"
+    )
+    const playerTransform = this.camera.getComponent<TransformComponent>(
       "transform"
     )
     // If we need to support multiple cameras
     // this.scene.layers.forEach(layer => layer.forEach(entity => { }))
 
-    transform.position.x = Math.max(
+    cameraTransform.position.x = Math.max(
       0,
-      entityTransform.position.x - transform.size.x / 2
+      playerTransform.position.x - cameraTransform.size.x / 2
     )
-    transform.position.y = 0
+    cameraTransform.position.y = 0
   }
 
   render = (dt: number) => {
     const transform = this.camera.getComponent<TransformComponent>("transform")
 
-    // this.context.fillStyle = '#00ff0011'
+    this.context.fillStyle = "#00ff0011"
     // this.context.fillRect(0, 0, size.x, size.y)
     this.context.fillRect(
-      0 - transform.position.x,
-      0 - transform.position.y,
-      128 * 16,
-      16 * 16
+      transform.position.x,
+      transform.position.y,
+      transform.size.x,
+      transform.size.y
     )
   }
 }

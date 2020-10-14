@@ -12,8 +12,8 @@ export default class DashSystem extends System {
   input = (event: IPewEvent) => {
     const dash = this.player.getComponent<DashComponent>("dash")
 
-    // Jump
     if (event.isKeyPressed("KeyP")) {
+      console.log("dash!")
       if (dash.cooldown < 0) {
         dash.engagedTime = 0.3
         dash.cooldown = dash.TIMER

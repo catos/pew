@@ -121,7 +121,7 @@ export default class DebugSystem extends System {
 
   drawDebug = () => {
     const { font, inputHandler, timer } = this.game
-    const { gravity } = this.scene
+    const { gravity, camera } = this.scene
 
     const { position: cameraPosition } = this.camera.getComponent<
       TransformComponent
@@ -164,7 +164,8 @@ export default class DebugSystem extends System {
     )
 
     // Collision candidates
-    const cs = this.scene.getSystem("collision") as CollisionSystem
+    const cs = this.scene.getSystem<CollisionSystem>("collision")
+    const cameraTransform = camera.getComponent<TransformComponent>("camera")
 
     const rightCol = [
       `FPS: ${timer.fps.toFixed(2)}`,
@@ -176,6 +177,7 @@ export default class DebugSystem extends System {
       `KEYS DOWN: ${_keysDown}`,
       "",
       `COL.CANDIDATES: ${cs.candidates.length}`,
+      `CAMERA.POS: ${cameraTransform.position.x}, ${cameraTransform.position.y}`,
     ]
 
     // TODO: needs mouseinputhandler...
