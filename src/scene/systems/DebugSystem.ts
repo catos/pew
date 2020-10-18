@@ -165,7 +165,7 @@ export default class DebugSystem extends System {
 
     // Collision candidates
     const cs = this.scene.getSystem<CollisionSystem>("collision")
-    const cameraTransform = camera.getComponent<TransformComponent>("camera")
+    const cameraTransform = camera.getComponent<TransformComponent>("transform")
 
     const rightCol = [
       `FPS: ${timer.fps.toFixed(2)}`,
@@ -178,6 +178,7 @@ export default class DebugSystem extends System {
       "",
       `COL.CANDIDATES: ${cs.candidates.length}`,
       `CAMERA.POS: ${cameraTransform.position.x}, ${cameraTransform.position.y}`,
+      `CAMERA.SIZE: ${cameraTransform.size.x}, ${cameraTransform.size.y}`,
     ]
 
     // TODO: needs mouseinputhandler...

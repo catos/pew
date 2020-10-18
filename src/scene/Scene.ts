@@ -25,6 +25,7 @@ import ShaderSystem from "./systems/ShaderSystem.js"
 import ClimbSystem from "./systems/ClimbSystem.js"
 import BreakableSystem from "./systems/BreakableSystem.js"
 import { IPewEvent } from "../core/InputHandler.js"
+import TransformComponent from "./components/TransformComponent.js"
 
 export interface ILayerObjectSpec {
   entityId: number
@@ -116,7 +117,10 @@ export default class Scene {
       .entities.find((p) => p instanceof CameraEntity)
 
     // Register systems
-    this.addSystem(new CameraSystem(this.camera, this.player, this))
+    const playerPosition = this.player.getComponent<TransformComponent>(
+      "transform"
+    ).position
+    this.addSystem(new CameraSystem(this.camera, playerPosition, this))
       .addSystem(new RenderSystem(this))
       .addSystem(new UISystem(this))
       .addSystem(new MovementSystem(this))
