@@ -1,10 +1,10 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import { Sides } from "./CollisionSystem.js"
 import JumpComponent from "../components/JumpComponent.js"
 import ClimbComponent from "../components/ClimbComponent.js"
 import HitboxComponent from "../components/HitboxComponent.js"
 import MovementComponent from "../components/MovementComponent.js"
-import Scene from "../Scene.js"
+import Scene from "../../core/Scene.js"
 
 export default class ClimbSystem extends System {
   constructor(scene: Scene) {
@@ -13,7 +13,7 @@ export default class ClimbSystem extends System {
 
   update = (dt: number) => {
     // TODO: hmm, move to input-method ?
-    const { keysDown } = this.game.inputHandler
+    const { keysDown } = this.inputHandler
 
     const jump = this.player.getComponent<JumpComponent>("jump")
     const climb = this.player.getComponent<ClimbComponent>("climb")

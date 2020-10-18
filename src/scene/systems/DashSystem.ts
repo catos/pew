@@ -1,15 +1,15 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import DashComponent from "../components/DashComponent.js"
 import MovementComponent from "../components/MovementComponent.js"
-import { IPewEvent } from "../../core/InputHandler.js"
-import Scene from "../Scene.js"
+import { IGameEvent } from "../../core/InputHandler.js"
+import Scene from "../../core/Scene.js"
 
 export default class DashSystem extends System {
   constructor(scene: Scene) {
     super("dash", scene)
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     const dash = this.player.getComponent<DashComponent>("dash")
 
     if (event.isKeyPressed("KeyP")) {

@@ -1,7 +1,7 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import { pad } from "../../lib/utils.js"
 import Vector2 from "../../lib/Vector2.js"
-import Scene from "../Scene.js"
+import Scene from "../../core/Scene.js"
 
 // TODO: modify background-color
 export default class ClockSystem extends System {
@@ -37,14 +37,12 @@ export default class ClockSystem extends System {
   }
 
   render = (dt: number) => {
-    const { font } = this.game
-
     const text = `CLOCK ${pad(this.clock.h.toString(), 2)}:${pad(
       this.clock.m.toString(),
       2
     )}`
     this.context.fillStyle = "#000000aa"
     this.context.fillRect(this.position.x - 4, 16, text.length * 6 + 8, 13)
-    font.print(text, this.context, this.position.x, this.position.y)
+    this.font.print(text, this.context, this.position.x, this.position.y)
   }
 }

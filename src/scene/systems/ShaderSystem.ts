@@ -1,7 +1,7 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import darkenColors from "../../shaders/darkenColors.js"
-import { IPewEvent } from "../../core/InputHandler.js"
-import Scene from "../Scene.js"
+import { IGameEvent } from "../../core/InputHandler.js"
+import Scene from "../../core/Scene.js"
 
 export default class ShaderSystem extends System {
   showShaders: boolean
@@ -14,15 +14,19 @@ export default class ShaderSystem extends System {
     this.showShaders = false
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     if (event.isKeyPressed("F2")) {
       this.showShaders = !this.showShaders
     }
   }
 
   render = (dt: number) => {
+    const {
+      canvas: { context },
+    } = this.scene.game
+
     if (this.showShaders) {
-      darkenColors(this.context, 16)
+      darkenColors(context, 16)
     }
   }
 }

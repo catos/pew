@@ -1,8 +1,6 @@
 import Vector2 from "../lib/Vector2.js"
-import Game from "../Game.js"
-import TransformComponent from "../scene/components/TransformComponent.js"
 
-export interface IPewEvent extends UIEvent {
+export interface IGameEvent extends UIEvent {
   keysDown: Map<string, boolean>
   position: Vector2
   isMousePressed: boolean
@@ -10,24 +8,20 @@ export interface IPewEvent extends UIEvent {
 }
 
 export default class InputHandler {
-  game: Game
   keysDown: Map<string, boolean>
   mappedKeys: string[]
   position: Vector2
 
-  constructor(game: Game) {
-    this.game = game
+  constructor() {
     this.keysDown = new Map()
     this.mappedKeys = ["F1", "F2", "F3", "F4", "F5"]
     this.position = Vector2.ZERO
   }
 
-  listenTo = (window: Window, callback: (event: IPewEvent) => void) => {
-    // TODO: move to separate MouseInputHandler ?
-    // , 'mousedown', 'mouseup', 'mousemove'
+  listenTo = (window: Window, callback: (event: IGameEvent) => void) => {
     ;["keydown", "keyup", "mousedown", "mouseup", "mousemove"].forEach(
       (eventName) => {
-        window.addEventListener(eventName, (event: IPewEvent) => {
+        window.addEventListener(eventName, (event: IGameEvent) => {
           if (event instanceof KeyboardEvent) {
             const { code, type } = event
 
@@ -54,9 +48,9 @@ export default class InputHandler {
             }
           }
 
-          if (event instanceof MouseEvent) {
-            this.position = this.getEventPosition(event)
-          }
+          // if (event instanceof MouseEvent) {
+          //   this.position = this.getEventPosition(event)
+          // }
           event.position = this.position
           event.isMousePressed = event.type === "mousedown"
           event.keysDown = this.keysDown
@@ -67,22 +61,17 @@ export default class InputHandler {
     )
   }
 
-  getEventPosition = (event: MouseEvent) => {
-    const {
-      canvas: { canvasRect },
-    } = this.game
-    const cameraTransform = this.game.scene.camera.getComponent<
-      TransformComponent
-    >("transform")
-
-    return new Vector2(
-      event.clientX - Math.floor(canvasRect.left) + cameraTransform.position.x,
-      event.clientY -
-        Math.floor(canvasRect.top) +
-        window.scrollY +
-        cameraTransform.position.y
-    )
-  }
+  // getEventPosition = (event: MouseEvent) => {
+  //   return new Vector2(
+  //     event.clientX -
+  //       Math.floor(this.canvas.canvasRect.left) +
+  //       this.camera.position.x,
+  //     event.clientY -
+  //       Math.floor(this.canvas.canvasRect.top) +
+  //       window.scrollY +
+  //       this.camera.position.y
+  //   )
+  // }
 
   isKeyPressed = (event: UIEvent) => (key: string) => {
     const result = event.type === "keydown" && this.keysDown.has(key)

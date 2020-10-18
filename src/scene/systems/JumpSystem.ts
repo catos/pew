@@ -1,18 +1,18 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import { Sides } from "./CollisionSystem.js"
 import ClimbComponent from "../components/ClimbComponent.js"
 import JumpComponent from "../components/JumpComponent.js"
 import HitboxComponent from "../components/HitboxComponent.js"
 import MovementComponent from "../components/MovementComponent.js"
-import { IPewEvent } from "../../core/InputHandler.js"
-import Scene from "../Scene.js"
+import { IGameEvent } from "../../core/InputHandler.js"
+import Scene from "../../core/Scene.js"
 
 export default class JumpSystem extends System {
   constructor(scene: Scene) {
     super("jump", scene)
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     const jump = this.player.getComponent<JumpComponent>("jump")
 
     // Jump

@@ -1,8 +1,9 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import MovementComponent from "../components/MovementComponent.js"
 import DashComponent from "../components/DashComponent.js"
-import Scene from "../Scene.js"
+import Scene from "../../core/Scene.js"
 
+// !!!!! TODO: move destructuring to constructor: context, font etc...
 export default class MovementSystem extends System {
   constructor(scene: Scene) {
     super("movement", scene)
@@ -11,7 +12,7 @@ export default class MovementSystem extends System {
   input = () => {
     const movement = this.player.getComponent<MovementComponent>("movement")
     const dash = this.player.getComponent<DashComponent>("dash")
-    const { keysDown } = this.game.inputHandler
+    const { keysDown } = this.scene.game.inputHandler
 
     // Right
     if (keysDown.has("KeyD") && dash.engagedTime <= 0) {

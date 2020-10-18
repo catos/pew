@@ -1,15 +1,15 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import HitboxComponent from "../components/HitboxComponent.js"
 import CrouchComponent from "../components/CrouchComponent.js"
-import { IPewEvent } from "../../core/InputHandler.js"
-import Scene from "../Scene.js"
+import { IGameEvent } from "../../core/InputHandler.js"
+import Scene from "../../core/Scene.js"
 
 export default class CrouchSystem extends System {
   constructor(scene: Scene) {
     super("crouch", scene)
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     const hitbox = this.player.getComponent<HitboxComponent>("hitbox")
     const crouch = this.player.getComponent<CrouchComponent>("crouch")
 

@@ -1,13 +1,12 @@
-import System from "../System.js"
-import CollisionSystem from "../CollisionSystem.js"
-import BoundingBox from "../../../lib/BoundingBox.js"
-import { download, roundToNearest } from "../../../lib/utils.js"
-import Scene, { ILevelSpec, IEntitySpec, ILayerSpec } from "../../Scene.js"
-import Vector2 from "../../../lib/Vector2.js"
-import Layer from "../../Layer.js"
-import TransformComponent from "../../components/TransformComponent.js"
-import CameraEntity from "../../entities/CameraEntity.js"
-import { IPewEvent } from "../../../core/InputHandler.js"
+import System from "../../core/System.js"
+import CollisionSystem from "./CollisionSystem.js"
+import BoundingBox from "../../lib/BoundingBox.js"
+import { download, roundToNearest } from "../../lib/utils.js"
+import Scene, { ILevelSpec, IEntitySpec, ILayerSpec } from "../../core/Scene.js"
+import Vector2 from "../../lib/Vector2.js"
+import Layer from "../../core/Layer.js"
+import TransformComponent from "../components/TransformComponent.js"
+import { IGameEvent } from "../../core/InputHandler.js"
 
 interface IBrush {
   id: number
@@ -39,7 +38,7 @@ export default class EditorSystem extends System {
     this.currentLayer = this.scene.layers[0]
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     if (event.isKeyPressed("F5")) {
       this.editorModeEnabled = !this.editorModeEnabled
     }
@@ -90,10 +89,7 @@ export default class EditorSystem extends System {
 
   render = (dt: number) => {
     const { tileset } = this.scene
-    const {
-      canvas: { element },
-      font,
-    } = this.game
+    const { element } = this.canvas
 
     if (!this.editorModeEnabled) {
       return
@@ -101,7 +97,7 @@ export default class EditorSystem extends System {
     // Draw current entity
     this.context.fillStyle = "#666666cc"
     this.context.fillRect(16 * 16 - 4, 16 * 14 - 4, 5 * 6 + 8, 29)
-    font.print(`BRUSH`, this.context, 16 * 16, 16 * 14)
+    this.font.print(`BRUSH`, this.context, 16 * 16, 16 * 14)
 
     const currentBrush = this.brushes.find((p) => p.current).spec
     const tileId = currentBrush.animations[0].frames[0]
@@ -173,10 +169,6 @@ export default class EditorSystem extends System {
     )
 
     const collides = candidates.some((candidate) => {
-      if (candidate instanceof CameraEntity) {
-        return false
-      }
-
       const transform = candidate.getComponent<TransformComponent>("transform")
       const candidateBb = new BoundingBox(transform.position, transform.size)
 

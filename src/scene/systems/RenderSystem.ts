@@ -1,19 +1,25 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import Entity from "../entities/Entity.js"
-import Layer from "../Layer.js"
+import Layer from "../../core/Layer.js"
 import MovementComponent from "../components/MovementComponent.js"
 import TransformComponent from "../components/TransformComponent.js"
 import CrouchComponent from "../components/CrouchComponent.js"
 import GraphicsComponent from "../components/GraphicsComponent.js"
-import Scene from "../Scene.js"
+import Scene from "../../core/Scene.js"
+import CameraSystem from "../../core/systems/CameraSystem.js"
 
 export default class RenderSystem extends System {
+  camera: CameraSystem
+  context: CanvasRenderingContext2D
+
   constructor(scene: Scene) {
     super("render", scene)
+    this.camera = this.scene.camera
+    this.context = this.scene.game.canvas.context
   }
 
   render = (dt: number) => {
-    this.game.scene.layers.forEach((layer) => this.renderLayer(layer))
+    this.scene.layers.forEach((layer) => this.renderLayer(layer))
   }
 
   renderLayer = (layer: Layer) => {
@@ -27,9 +33,6 @@ export default class RenderSystem extends System {
   drawTile = (entity: Entity) => {
     const movement = entity.getComponent<MovementComponent>("movement")
     const { position } = entity.getComponent<TransformComponent>("transform")
-    const { position: cameraPosition } = this.camera.getComponent<
-      TransformComponent
-    >("transform")
 
     // Flip ?
     const dir = movement ? movement.heading : false
@@ -38,8 +41,8 @@ export default class RenderSystem extends System {
     this.scene.tileset.drawTile(
       this.getTileId(entity).toString(),
       this.context,
-      position.x - cameraPosition.x,
-      position.y - cameraPosition.y,
+      position.x - this.camera.position.x,
+      position.y - this.camera.position.y,
       flip
     )
   }

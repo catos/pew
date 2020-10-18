@@ -1,4 +1,4 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import TransformComponent from "../components/TransformComponent.js"
 import JumpComponent from "../components/JumpComponent.js"
 import ClimbComponent from "../components/ClimbComponent.js"
@@ -9,8 +9,8 @@ import DashComponent from "../components/DashComponent.js"
 import Entity from "../entities/Entity.js"
 import HitpointsComponent from "../components/HitpointsComponent.js"
 import Vector2 from "../../lib/Vector2.js"
-import { IPewEvent } from "../../core/InputHandler.js"
-import Scene from "../Scene.js"
+import { IGameEvent } from "../../core/InputHandler.js"
+import Scene from "../../core/Scene.js"
 import CollisionSystem from "./CollisionSystem.js"
 
 interface IMenuItem {
@@ -39,7 +39,7 @@ export default class DebugSystem extends System {
     ]
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     if (event.isKeyPressed("F1")) {
       this.showMenu = !this.showMenu
     }
@@ -49,10 +49,6 @@ export default class DebugSystem extends System {
   }
 
   render = (dt: number) => {
-    const { position: cameraPosition } = this.camera.getComponent<
-      TransformComponent
-    >("transform")
-
     if (this.showMenu) {
       this.drawMenu()
     }
@@ -61,8 +57,8 @@ export default class DebugSystem extends System {
       this.drawDebug()
 
       this.scene.layers[0].entities.forEach((entity) => {
-        this.drawHitpoints(entity, cameraPosition)
-        this.drawHitbox(entity, cameraPosition)
+        this.drawHitpoints(entity, this.camera.position)
+        this.drawHitbox(entity, this.camera.position)
       })
     }
   }
@@ -71,7 +67,7 @@ export default class DebugSystem extends System {
     const hitpoints = entity.getComponent<HitpointsComponent>("hitpoints")
     if (hitpoints) {
       const { position } = entity.getComponent<TransformComponent>("transform")
-      this.game.font.print(
+      this.font.print(
         hitpoints.current.toString(),
         this.context,
         position.x - cameraPosition.x + 2,
@@ -95,7 +91,6 @@ export default class DebugSystem extends System {
   }
 
   drawMenu = () => {
-    const { font, timer } = this.game
     const { layers } = this.scene
     const { context } = this
 
@@ -104,15 +99,15 @@ export default class DebugSystem extends System {
 
     let x = 8
     this.menu.forEach((item) => {
-      font.print(`${item.key}:${item.title}`, context, x, 4)
+      this.font.print(`${item.key}:${item.title}`, context, x, 4)
       x += 8 * 7
     })
 
     const objects = layers[0].entities
-    font.print(
+    this.font.print(
       `E:${objects.length} C:${
         objects.filter((p) => p.hasComponents(["hitbox"])).length
-      } FPS:${timer.fps}`,
+      } FPS:${this.timer.fps}`,
       context,
       16 * 25,
       4
@@ -120,12 +115,7 @@ export default class DebugSystem extends System {
   }
 
   drawDebug = () => {
-    const { font, inputHandler, timer } = this.game
-    const { gravity, camera } = this.scene
-
-    const { position: cameraPosition } = this.camera.getComponent<
-      TransformComponent
-    >("transform")
+    const { gravity } = this.scene
 
     const jump = this.player.getComponent<JumpComponent>("jump")
     const climb = this.player.getComponent<ClimbComponent>("climb")
@@ -156,43 +146,46 @@ export default class DebugSystem extends System {
       `DASH: ${dash.cooldown.toFixed(2)}`,
     ]
 
-    font.printArray(playerDebug, this.context, 8, 16 * 18)
+    this.font.printArray(playerDebug, this.context, 8, 16 * 18)
 
-    const _keysDown = Array.from(inputHandler.keysDown.keys()).reduce(
+    const _keysDown = Array.from(this.inputHandler.keysDown.keys()).reduce(
       (acc, key) => acc + " " + key,
       ""
     )
 
     // Collision candidates
     const cs = this.scene.getSystem<CollisionSystem>("collision")
-    const cameraTransform = camera.getComponent<TransformComponent>("transform")
 
     const rightCol = [
-      `FPS: ${timer.fps.toFixed(2)}`,
-      `TIMER: ${timer.total.toFixed(2)}, ${timer.accumulatedTime.toFixed(
+      `FPS: ${this.timer.fps.toFixed(2)}`,
+      `TIMER: ${this.timer.total.toFixed(
         2
-      )}, ${timer.lastTime.toFixed(2)}`,
+      )}, ${this.timer.accumulatedTime.toFixed(
+        2
+      )}, ${this.timer.lastTime.toFixed(2)}`,
       `GRAVITY: ${gravity}`,
-      `CAM.POS: ${cameraPosition.x.toFixed(2)}, ${cameraPosition.y.toFixed(2)}`,
+      `CAM.POS: ${this.camera.position.x.toFixed(
+        2
+      )}, ${this.camera.position.y.toFixed(2)}`,
       `KEYS DOWN: ${_keysDown}`,
       "",
       `COL.CANDIDATES: ${cs.candidates.length}`,
-      `CAMERA.POS: ${cameraTransform.position.x}, ${cameraTransform.position.y}`,
-      `CAMERA.SIZE: ${cameraTransform.size.x}, ${cameraTransform.size.y}`,
+      `CAMERA.POS: ${this.camera.position.x}, ${this.camera.position.y}`,
+      `CAMERA.SIZE: ${this.camera.size.x}, ${this.camera.size.y}`,
     ]
 
     // TODO: needs mouseinputhandler...
     const [x, y] = [
-      Math.floor(inputHandler.position.x),
-      Math.floor(inputHandler.position.y),
+      Math.floor(this.inputHandler.position.x),
+      Math.floor(this.inputHandler.position.y),
     ]
     const [relX, relY] = [
-      Math.floor(x - cameraPosition.x),
-      Math.floor(y - cameraPosition.y),
+      Math.floor(x - this.camera.position.x),
+      Math.floor(y - this.camera.position.y),
     ]
     rightCol.push(`MOUSE: ${x}, ${y}`)
     rightCol.push(`MOUSE (RELATIVE): ${relX}, ${relY}`)
 
-    font.printArray(rightCol, this.context, 16 * 16, 16 * 18)
+    this.font.printArray(rightCol, this.context, 16 * 16, 16 * 18)
   }
 }

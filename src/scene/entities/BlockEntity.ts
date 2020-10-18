@@ -1,11 +1,11 @@
-import Entity from './Entity.js'
-import { IEntitySpec } from '../Scene.js';
-import Vector2 from '../../lib/Vector2.js';
+import Entity from "./Entity.js"
+import { IEntitySpec } from "../../core/Scene.js"
+import Vector2 from "../../lib/Vector2.js"
 
-import TransformComponent from '../components/TransformComponent.js';
-import GraphicsComponent from '../components/GraphicsComponent.js';
-import HitboxComponent from '../components/HitboxComponent.js';
-import HitpointsComponent from '../components/HitpointsComponent.js';
+import TransformComponent from "../components/TransformComponent.js"
+import GraphicsComponent from "../components/GraphicsComponent.js"
+import HitboxComponent from "../components/HitboxComponent.js"
+import HitpointsComponent from "../components/HitpointsComponent.js"
 
 export default class BlockEntity extends Entity {
   constructor(spec: IEntitySpec, position: Vector2) {
@@ -20,4 +20,4 @@ export default class BlockEntity extends Entity {
       this.addComponent(new HitpointsComponent(spec.hitpoints))
     }
   }
-} 
+}

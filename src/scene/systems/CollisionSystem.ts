@@ -1,10 +1,10 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 import Entity from "../entities/Entity.js"
 import HitboxComponent from "../components/HitboxComponent.js"
 import TransformComponent from "../components/TransformComponent.js"
 import MovementComponent from "../components/MovementComponent.js"
-import { IPewEvent } from "../../core/InputHandler.js"
-import Scene from "../Scene.js"
+import { IGameEvent } from "../../core/InputHandler.js"
+import Scene from "../../core/Scene.js"
 
 export enum Sides {
   NONE = 0,
@@ -37,7 +37,7 @@ export default class CollisionSystem extends System {
     )
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     if (event.isKeyPressed("F4")) {
       this.showCollisions = !this.showCollisions
     }
@@ -79,14 +79,11 @@ export default class CollisionSystem extends System {
         .filter((entity) => entity.hasComponents(["hitbox"]))
         .forEach((entity) => {
           const hitbox = entity.getComponent<HitboxComponent>("hitbox")
-          const cameraTransform = this.camera.getComponent<TransformComponent>(
-            "transform"
-          )
 
           this.context.fillStyle = "#0000bb66"
           this.context.fillRect(
-            hitbox.bounds.left - cameraTransform.position.x,
-            hitbox.bounds.top - cameraTransform.position.y,
+            hitbox.bounds.left - this.camera.position.x,
+            hitbox.bounds.top - this.camera.position.y,
             hitbox.bounds.size.x,
             hitbox.bounds.size.y
           )
@@ -95,8 +92,8 @@ export default class CollisionSystem extends System {
           if (hitbox.collision !== Sides.NONE) {
             this.context.fillStyle = "#bb000066"
             this.context.fillRect(
-              hitbox.bounds.left - cameraTransform.position.x,
-              hitbox.bounds.top - cameraTransform.position.y,
+              hitbox.bounds.left - this.camera.position.x,
+              hitbox.bounds.top - this.camera.position.y,
               hitbox.bounds.size.x,
               hitbox.bounds.size.y
             )

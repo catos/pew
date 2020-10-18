@@ -1,31 +1,31 @@
 import Vector2 from "../lib/Vector2.js"
 import { loadImage, loadJSON } from "../lib/loaders.js"
 
-import Game from "../Game.js"
-import Tileset from "../core/Tileset.js"
+import Game from "../PewGame.js"
+import Tileset from "./Tileset.js"
 
 import Layer from "./Layer.js"
 
-import PlayerEntity from "./entities/PlayerEntity.js"
-import CameraEntity from "./entities/CameraEntity.js"
+import PlayerEntity from "../scene/entities/PlayerEntity.js"
 
-import System from "./systems/System.js"
-import MovementSystem from "./systems/MovementSystem.js"
-import RenderSystem from "./systems/RenderSystem.js"
-import CollisionSystem from "./systems/CollisionSystem.js"
-import JumpSystem from "./systems/JumpSystem.js"
-import EditorSystem from "./systems/Editor/EditorSystem.js"
+// TODO: create ISystem
+import { ISystem } from "./System.js"
+import MovementSystem from "../scene/systems/MovementSystem.js"
+import RenderSystem from "../scene/systems/RenderSystem.js"
+import CollisionSystem from "../scene/systems/CollisionSystem.js"
+import JumpSystem from "../scene/systems/JumpSystem.js"
+import EditorSystem from "../scene/systems/EditorSystem.js"
 import CameraSystem from "./systems/CameraSystem.js"
-import DebugSystem from "./systems/DebugSystem.js"
-import UISystem from "./systems/UISystem.js"
-import CrouchSystem from "./systems/CrouchSystem.js"
-import ClockSystem from "./systems/ClockSystem.js"
-import DashSystem from "./systems/DashSystem.js"
-import ShaderSystem from "./systems/ShaderSystem.js"
-import ClimbSystem from "./systems/ClimbSystem.js"
-import BreakableSystem from "./systems/BreakableSystem.js"
-import { IPewEvent } from "../core/InputHandler.js"
-import TransformComponent from "./components/TransformComponent.js"
+import DebugSystem from "../scene/systems/DebugSystem.js"
+import UISystem from "../scene/systems/UISystem.js"
+import CrouchSystem from "../scene/systems/CrouchSystem.js"
+import ClockSystem from "../scene/systems/ClockSystem.js"
+import DashSystem from "../scene/systems/DashSystem.js"
+import ShaderSystem from "../scene/systems/ShaderSystem.js"
+import ClimbSystem from "../scene/systems/ClimbSystem.js"
+import BreakableSystem from "../scene/systems/BreakableSystem.js"
+import { IGameEvent } from "./InputHandler.js"
+import TransformComponent from "../scene/components/TransformComponent.js"
 
 export interface ILayerObjectSpec {
   entityId: number
@@ -84,8 +84,9 @@ export default class Scene {
   tileset: Tileset
   layers: Layer[]
   player: PlayerEntity
-  camera: CameraEntity
-  systems: System[] = []
+
+  camera: CameraSystem
+  systems: ISystem[] = []
 
   constructor(game: Game, url: string) {
     this.game = game
@@ -107,21 +108,25 @@ export default class Scene {
       return new Layer(this, layerSpec, this.spec.entities)
     })
 
+    // Player
     this.player = this.layers
       .find((p) => p.index === 1)
       .entities.find((p) => p instanceof PlayerEntity)
 
-    // "size": { "x": 256, "y": 224 }
-    this.camera = this.layers
-      .find((p) => p.index === 1)
-      .entities.find((p) => p instanceof CameraEntity)
-
-    // Register systems
+    // Camera
     const playerPosition = this.player.getComponent<TransformComponent>(
       "transform"
     ).position
-    this.addSystem(new CameraSystem(this.camera, playerPosition, this))
-      .addSystem(new RenderSystem(this))
+    this.camera = new CameraSystem(
+      new Vector2(128, 0),
+      new Vector2(256, 256),
+      playerPosition,
+      this
+    )
+    this.addSystem(this.camera)
+
+    // Register systems
+    this.addSystem(new RenderSystem(this))
       .addSystem(new UISystem(this))
       .addSystem(new MovementSystem(this))
       .addSystem(new CollisionSystem(this))
@@ -139,7 +144,7 @@ export default class Scene {
     this.systems.forEach((system) => system.init())
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     this.systems.forEach((system) => system.input(event))
   }
 
@@ -149,22 +154,28 @@ export default class Scene {
 
   render = (dt: number) => {
     const { context } = this.game.canvas
+
+    // Clear canvas
+    this.game.canvas.clear()
+
     // Paint blue background
     const gradient = context.createLinearGradient(0, 0, 0, 16 * 16)
     gradient.addColorStop(0, "#38c0fc")
     gradient.addColorStop(0.5, "cyan")
-    gradient.addColorStop(0.75, "black")
+    gradient.addColorStop(0.75, "#009999")
+    gradient.addColorStop(1, "#001919")
     context.fillStyle = gradient
-    // context.fillStyle = '#cbdbfc'
+    context.fillRect(0, 0, this.game.width, this.game.height)
 
+    // Render systems
     this.systems.forEach((system) => system.render(dt))
   }
 
-  getSystem = <T extends System>(name: string): T => {
+  getSystem = <T extends ISystem>(name: string): T => {
     return this.systems.find((p) => p.name === name) as T
   }
 
-  addSystem = (system: System) => {
+  addSystem = (system: ISystem) => {
     this.systems.push(system)
     return this
   }

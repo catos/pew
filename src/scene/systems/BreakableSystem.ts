@@ -1,10 +1,10 @@
-import System from "./System.js"
+import System from "../../core/System.js"
 
-import Layer from "../Layer.js"
+import Layer from "../../core/Layer.js"
 import TransformComponent from "../components/TransformComponent.js"
 import HitpointsComponent from "../components/HitpointsComponent.js"
-import { IPewEvent } from "../../core/InputHandler.js"
-import Scene from "../Scene.js"
+import { IGameEvent } from "../../core/InputHandler.js"
+import Scene from "../../core/Scene.js"
 
 export default class BreakableSystem extends System {
   layer: Layer
@@ -17,7 +17,7 @@ export default class BreakableSystem extends System {
     this.layer = this.scene.layers[0]
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     // const pickaxe = this.player.getComponent<PickaxeComponent>('pickaxe')
     // console.log(event)
 

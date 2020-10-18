@@ -6,7 +6,6 @@
       "index": 1,
       "name": "layer-2",
       "objects": [
-        { "entityId": 1, "x": 128, "y": 0 },
         { "entityId": 2, "x": 256, "y": 144 },
         { "entityId": 4, "x": 0, "y": 176 },
         { "entityId": 4, "x": 16, "y": 176 },
@@ -67,12 +66,6 @@
     { "index": 2, "name": "layer-3", "objects": [] }
   ],
   "entities": [
-    {
-      "id": 1,
-      "name": "camera1",
-      "type": "camera",
-      "size": { "x": 256, "y": 256 }
-    },
     {
       "id": 2,
       "name": "Mr Pew",

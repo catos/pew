@@ -1,10 +1,10 @@
-import Canvas from "./lib/Canvas.js"
-import Font from "./core/Font.js"
-import Scene from "./scene/Scene.js"
-import InputHandler, { IPewEvent } from "./core/InputHandler.js"
-import Timer from "./core/Timer.js"
+import Canvas from "./Canvas.js"
+import Font from "./Font.js"
+import Scene from "./Scene.js"
+import InputHandler, { IGameEvent } from "./InputHandler.js"
+import Timer from "./Timer.js"
 
-interface IGameOptions {
+export interface IGameOptions {
   name: string
   width: number
   height: number
@@ -17,9 +17,9 @@ export default class Game {
 
   canvas: Canvas
   font: Font
-  scene: Scene
   inputHandler: InputHandler
   timer: Timer
+  scene: Scene
 
   constructor({ name, width, height }: IGameOptions) {
     this.name = name
@@ -35,26 +35,31 @@ export default class Game {
     this.font = new Font("./assets/gfx/font.png", 5, 5)
     await this.font.init()
 
-    // Scene
-    this.scene = new Scene(this, "/build/assets/levels/level-1.json")
-    await this.scene.init()
-
     // Input
     // TODO: mappings // const mappings = await loadJSON('./js/inputMappings.json')
     // TODO: send canvas and camera only ?
-    this.inputHandler = new InputHandler(this)
+    this.inputHandler = new InputHandler()
     this.inputHandler.listenTo(window, this.input)
-    console.log("Game.init, finished: ", this)
 
     // Timer
-    this.timer = new Timer(this.loop)
-    this.timer.start()
+    this.timer = new Timer((dt: number) => {
+      this.update(dt)
+      this.render(dt)
+    })
 
+    // Scene
+    if (!this.scene) {
+      throw new Error("Unable to init game, no scene found")
+    }
+    await this.scene.init()
+
+    // Start game
+    this.timer.start()
     // this.loop(0)
-    console.log("Game started")
+    console.log(`Game "${this.name}" started`, this)
   }
 
-  input = (event: IPewEvent) => {
+  input = (event: IGameEvent) => {
     this.scene.input(event)
   }
 
@@ -63,12 +68,10 @@ export default class Game {
   }
 
   render = (dt: number) => {
-    this.canvas.clear()
     this.scene.render(dt)
   }
 
-  loop = (dt: number) => {
-    this.update(dt)
-    this.render(dt)
+  addScene = (scene: Scene) => {
+    this.scene = scene
   }
 }

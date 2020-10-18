@@ -1,14 +1,13 @@
 import Vector2 from "../lib/Vector2.js"
 import Scene, { ILayerSpec, IEntitySpec } from "./Scene.js"
 
-import Entity from "./entities/Entity.js"
-import PlayerEntity from "./entities/PlayerEntity.js"
-import SkeletonEntity from "./entities/SkeletonEntity.js"
-import BlockEntity from "./entities/BlockEntity.js"
-import CameraEntity from "./entities/CameraEntity.js"
-import DecorationEntity from "./entities/DecorationEntity.js"
-import HitboxComponent from "./components/HitboxComponent.js"
-import CollisionSystem from "./systems/CollisionSystem.js"
+import Entity from "../scene/entities/Entity.js"
+import PlayerEntity from "../scene/entities/PlayerEntity.js"
+import SkeletonEntity from "../scene/entities/SkeletonEntity.js"
+import BlockEntity from "../scene/entities/BlockEntity.js"
+import DecorationEntity from "../scene/entities/DecorationEntity.js"
+import HitboxComponent from "../scene/components/HitboxComponent.js"
+import CollisionSystem from "../scene/systems/CollisionSystem.js"
 
 export default class Layer {
   scene: Scene
@@ -57,9 +56,6 @@ export default class Layer {
 
       case "block":
         return new BlockEntity(spec, position)
-
-      case "camera":
-        return new CameraEntity(spec, position)
 
       case "decoration":
         return new DecorationEntity(spec, position)

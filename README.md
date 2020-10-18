@@ -1,4 +1,14 @@
+# Hierarchy
+
+-- Game
+---- Scene
+------ Systems
+------ Layers
+-------- Entities
+---------- Components
+
 # TODO
+
 - Entity.getComponent || move addComponent to System ?
 - convert loader function to be async
 - Tileset.defineTiles fix for-loops

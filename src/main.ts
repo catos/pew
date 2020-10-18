@@ -1,8 +1,8 @@
-import Game from "./Game.js"
+import PewGame from "./PewGame.js"
 
-const game = new Game({
+const pew = new PewGame({
   name: "pew",
   width: 512,
   height: 448,
 })
-game.init()
+pew.init()
