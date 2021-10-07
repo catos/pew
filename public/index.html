@@ -1,56 +1,52 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Pew</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: #000000;
+      }
 
-<head>
-  <title>Pew</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #000000;
-    }
-
-    /* canvas {
+      /* canvas {
       position: absolute;
       top: 0;
       left: 0;
     } */
 
-    /* #pew {
+      /* #pew {
       display: grid;
       grid-template-rows: 1fr 1fr;
       align-items: center;
       justify-items: center;
     } */
 
-    #screen,
-    #screen-foreground,
-    #screen-background {
-      /* width: 90%; */
-      image-rendering: pixelated;
-    }
+      #screen,
+      #screen-foreground,
+      #screen-background {
+        /* width: 90%; */
+        image-rendering: pixelated;
+      }
 
-    #debug,
-    #input-debug {
-      /* top: 448px;
+      #debug,
+      #input-debug {
+        /* top: 448px;
       width: 90%; */
-      image-rendering: pixelated;
-    }
-  </style>
-  <!-- <script type="module" src="./js/lib/math.js"></script> -->
-  <script type="module" src="./main2.js"></script>
-</head>
+        image-rendering: pixelated;
+      }
+    </style>
+    <!-- <script type="module" src="./js/lib/math.js"></script> -->
+    <script type="module" src="./main.js"></script>
+  </head>
 
-<body>
-  <div id="pew">
-  </div>
+  <body>
+    <div id="pew"></div>
 
-  <!-- <canvas id="screen" width="512" height="448"></canvas> -->
-  <!-- <canvas id="screen-foreground" width="512" height="448"></canvas> -->
-  <!-- <canvas id="screen-background" width="512" height="448"></canvas> -->
+    <!-- <canvas id="screen" width="512" height="448"></canvas> -->
+    <!-- <canvas id="screen-foreground" width="512" height="448"></canvas> -->
+    <!-- <canvas id="screen-background" width="512" height="448"></canvas> -->
 
-  <!-- <canvas id="debug" width="512" height="448"></canvas>
+    <!-- <canvas id="debug" width="512" height="448"></canvas>
   <canvas id="debug-input" width="512" height="448"></canvas> -->
-
-</body>
-
+  </body>
 </html>
